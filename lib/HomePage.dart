@@ -13,13 +13,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   //This allows us to do our coding in separate files for each function of the app.
-  static const List<Widget> _pages = <Widget>[SocialMedia(), FoodTracker(), ChatBot()];
+  static const List<Widget> _pages = <Widget>[FoodTracker(), SocialMedia(), ChatBot()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Main Page"),
+          title: const Text("Home Page"),
           centerTitle: true,
           backgroundColor: Colors.green,
         ),
@@ -36,12 +36,12 @@ class _HomePageState extends State<HomePage> {
           //Displays a tab bar at bottom of screen containing icons and labels
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.phone_android),
-              label: 'Social Media',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.food_bank_outlined),
               label: 'Food Tracker',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.phone_android),
+              label: 'Social Media',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.computer),
