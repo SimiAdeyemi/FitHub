@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:106886147486:android:f2bf22c0a6cfe2ff453a8f",
+        "android_client_info": {
+          "package_name": "com.a"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106886147486-rr95kfn4ao3iufk7uh9uabn7cpck9ogu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX7CwRezoZ6uiKopMVJkZwrGlFt1w-UwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106886147486-rr95kfn4ao3iufk7uh9uabn7cpck9ogu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "106886147486-omkl2lohpuqfl67qlctabah7rct8rdsj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fithub.groupProject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:106886147486:android:2033987c26aa7d87453a8f",
         "android_client_info": {
           "package_name": "com.fithub.group_project"
@@ -37,6 +73,13 @@
             {
               "client_id": "106886147486-rr95kfn4ao3iufk7uh9uabn7cpck9ogu.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "106886147486-omkl2lohpuqfl67qlctabah7rct8rdsj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fithub.groupProject"
+              }
             }
           ]
         }
