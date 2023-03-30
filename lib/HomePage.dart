@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:group_project/ChatBot.dart';
-import 'package:group_project/FoodTracker.dart';
-import 'package:group_project/SocialMedia.dart';
+import 'FeatureSections/ChatBot.dart';
+import 'FeatureSections/FoodTracker.dart';
+import 'FeatureSections/More.dart';
+import 'FeatureSections/SocialMedia.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,15 +15,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   //This allows us to do our coding in separate files for each function of the app.
-  static const List<Widget> _pages = <Widget>[FoodTracker(), SocialMedia(), ChatBot()];
+  static const List<Widget> _pages = <Widget>[FoodTracker(), SocialMedia(), ChatBot(), More()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Home Page"),
+          title: const Text("Top Bar"),
           centerTitle: true,
           backgroundColor: Colors.green,
+          automaticallyImplyLeading: false, // remove the back arrow
         ),
 
         //This widget is how we get a tab bar at the bottom of the screen
@@ -32,6 +35,7 @@ class _HomePageState extends State<HomePage> {
           selectedIconTheme: const IconThemeData(color: Colors.blueAccent, size: 30),
           selectedItemColor: Colors.blue,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          type: BottomNavigationBarType.fixed,
 
           //Displays a tab bar at bottom of screen containing icons and labels
           items: const <BottomNavigationBarItem>[
@@ -46,6 +50,10 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.computer),
               label: 'Chat Bot',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz_outlined),
+              label: 'More',
             ),
           ],
           currentIndex: _selectedIndex, //New
