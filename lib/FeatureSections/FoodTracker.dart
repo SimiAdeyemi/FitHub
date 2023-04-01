@@ -4,7 +4,7 @@ class FoodTracker extends StatefulWidget {
   const FoodTracker({Key? key}) : super(key: key);
 
   @override
-  _FoodTrackerState createState() => _FoodTrackerState();
+  State<StatefulWidget> createState() => _FoodTrackerState();
 }
 
 class _FoodTrackerState extends State<FoodTracker> {
