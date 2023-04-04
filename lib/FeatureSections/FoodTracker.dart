@@ -14,6 +14,9 @@ class _FoodTrackerState extends State<FoodTracker> {
   double _weight = 0;
   double _bmi = 0;
   bool _showBmi = false;
+  bool _isMetric = true;
+  double _feet = 0;
+  double _inches = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,22 @@ class _FoodTrackerState extends State<FoodTracker> {
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Use metric units?'),
+              const SizedBox(width: 16),
+              Switch(
+                value: _isMetric,
+                onChanged: (value) {
+                  setState(() {
+                    _isMetric = value;
+                  });
+                },
+              ),
+            ],
+          ),
           if (_gender != null && _isOver18)
             Column(
               children: [
@@ -76,56 +95,94 @@ class _FoodTrackerState extends State<FoodTracker> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Height (inches)',
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      _height = double.parse(value);
-                    });
-                  },
-                ),
+                _buildHeightField(),
                 const SizedBox(height: 16),
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Weight (lbs)',
+                  decoration: InputDecoration(
+                    labelText: _isMetric ? 'Weight (kg)' : 'Weight (lbs)',
                   ),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     setState(() {
-                      _weight = double.parse(value);
+                      _weight = double.tryParse(value) ?? 0;
                     });
                   },
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      _bmi = _weight / (_height * _height) * 703;
-                      _showBmi = true;
-                    });
+                    _calculateBMI();
                   },
                   child: const Text('Calculate BMI'),
                 ),
               ],
             ),
           if (_showBmi)
-            Column(
-              children: [
-                const Text(
-                  'Your BMI is:',
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  _bmi.toStringAsFixed(1),
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+            Text('Your BMI is: $_bmi'),
         ],
       ),
     );
+  }
+
+  void _calculateBMI() {
+    if (_isMetric) {
+      _bmi = _weight / ((_height / 100) * (_height / 100));
+    } else {
+      double totalInches = (_feet * 12) + _inches;
+      double heightInMeters = totalInches * 0.0254;
+      _bmi = _weight / (heightInMeters * heightInMeters);
+    }
+
+    // Round the BMI to 1 decimal place
+    _bmi = double.parse(_bmi.toStringAsFixed(1));
+
+    setState(() {
+      _showBmi = true;
+    });
+  }
+
+  Widget _buildHeightField() {
+    if (_isMetric) {
+      return TextField(
+        decoration: const InputDecoration(
+          labelText: 'Height (cm)',
+        ),
+        keyboardType: TextInputType.number,
+        onChanged: (value) {
+          setState(() {
+            _height = double.tryParse(value) ?? 0;
+          });
+        },
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Feet',
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                _feet = double.tryParse(value) ?? 0;
+              });
+            },
+          ),
+          const SizedBox(width: 16),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Inches',
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                _inches = double.tryParse(value) ?? 0;
+              });
+            },
+          ),
+        ],
+      );
+    }
   }
 }
