@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Top Bar"),
+          title: const Text("FitHub"),
           centerTitle: true,
           backgroundColor: Colors.green,
           automaticallyImplyLeading: false, // remove the back arrow

@@ -14,8 +14,7 @@ class _FoodTrackerState extends State<FoodTracker> {
   double _weight = 0;
   double _bmi = 0;
   bool _showBmi = false;
-  bool _isMetric = true;
-  double _feet = 0;
+  bool _useMetricUnits = true;
   double _inches = 0;
 
   @override
@@ -28,7 +27,7 @@ class _FoodTrackerState extends State<FoodTracker> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            'Please enter your gender and age:',
+            'Please select your gender:',
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -77,10 +76,10 @@ class _FoodTrackerState extends State<FoodTracker> {
               const Text('Use metric units?'),
               const SizedBox(width: 16),
               Switch(
-                value: _isMetric,
+                value: _useMetricUnits,
                 onChanged: (value) {
                   setState(() {
-                    _isMetric = value;
+                    _useMetricUnits = value;
                   });
                 },
               ),
@@ -97,17 +96,10 @@ class _FoodTrackerState extends State<FoodTracker> {
                 const SizedBox(height: 16),
                 _buildHeightField(),
                 const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: _isMetric ? 'Weight (kg)' : 'Weight (lbs)',
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      _weight = double.tryParse(value) ?? 0;
-                    });
-                  },
-                ),
+                if (_useMetricUnits)
+                  _buildWeightField()
+                else
+                  _buildPoundWeightField(),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
@@ -124,65 +116,108 @@ class _FoodTrackerState extends State<FoodTracker> {
     );
   }
 
-  void _calculateBMI() {
-    if (_isMetric) {
-      _bmi = _weight / ((_height / 100) * (_height / 100));
-    } else {
-      double totalInches = (_feet * 12) + _inches;
-      double heightInMeters = totalInches * 0.0254;
-      _bmi = _weight / (heightInMeters * heightInMeters);
-    }
-
-    // Round the BMI to 1 decimal place
-    _bmi = double.parse(_bmi.toStringAsFixed(1));
-
-    setState(() {
-      _showBmi = true;
-    });
+  Widget _buildHeightField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Height: '),
+        SizedBox(
+          width: 100,
+          child: TextField(
+            decoration: InputDecoration(
+              labelText: _useMetricUnits ? 'Centimeters' : 'Feet',
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                _height = double.tryParse(value) ?? 0;
+              });
+            },
+          ),
+        ),
+        if (!_useMetricUnits) const Text('\''),
+        if (!_useMetricUnits)
+          const SizedBox(
+              width : 16
+          ),
+        if (_useMetricUnits)
+          const SizedBox.shrink()
+        else
+          SizedBox(
+            width: 100,
+            child: TextField(
+              decoration: const InputDecoration(
+                labelText: 'Inches',
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                setState(() {
+                  _inches = double.tryParse(value) ?? 0;
+                });
+              },
+            ),
+          ),
+      ],
+    );
   }
 
-  Widget _buildHeightField() {
-    if (_isMetric) {
-      return TextField(
-        decoration: const InputDecoration(
-          labelText: 'Height (cm)',
+  Widget _buildWeightField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Weight: '),
+        SizedBox(
+          width: 100,
+          child: TextField(
+            decoration: const InputDecoration(
+              labelText: 'Kilograms',
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                _weight = double.tryParse(value) ?? 0;
+              });
+            },
+          ),
         ),
-        keyboardType: TextInputType.number,
-        onChanged: (value) {
-          setState(() {
-            _height = double.tryParse(value) ?? 0;
-          });
-        },
-      );
-    } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
+      ],
+    );
+  }
+
+  Widget _buildPoundWeightField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Weight: '),
+        SizedBox(
+          width: 100,
+          child: TextField(
             decoration: const InputDecoration(
-              labelText: 'Feet',
+              labelText: 'Pounds',
             ),
             keyboardType: TextInputType.number,
             onChanged: (value) {
               setState(() {
-                _feet = double.tryParse(value) ?? 0;
+                _weight = double.tryParse(value) ?? 0;
               });
             },
           ),
-          const SizedBox(width: 16),
-          TextField(
-            decoration: const InputDecoration(
-              labelText: 'Inches',
-            ),
-            keyboardType: TextInputType.number,
-            onChanged: (value) {
-              setState(() {
-                _inches = double.tryParse(value) ?? 0;
-              });
-            },
-          ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
+
+  void _calculateBMI() {
+    double heightInMeters = _height / 100;
+    if (!_useMetricUnits) {
+      heightInMeters = ((_height * 12) + _inches) * 0.0254;
+      _weight = _weight * 0.453592;
     }
+    double bmi = _weight / (heightInMeters * heightInMeters);
+    setState(() {
+      _bmi = bmi;
+      _showBmi = true;
+    });
+    _bmi = double.parse(_bmi.toStringAsFixed(1)); // format to one decimal place
   }
 }
