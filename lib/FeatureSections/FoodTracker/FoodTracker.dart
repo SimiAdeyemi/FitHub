@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'calorieCounter.dart';
+import 'calorieCounter.dart';
 
 class FoodTracker extends StatefulWidget {
   const FoodTracker({Key? key}) : super(key: key);
@@ -107,6 +107,15 @@ class _FoodTrackerState extends State<FoodTracker> {
                     _calculateBMI();
                   },
                   child: const Text('Calculate BMI'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const calorieCounter()),
+                    );
+                  },
+                  child: const Text('Continue'),
                 ),
               ],
             ),

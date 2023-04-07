@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 
-class CalorieCounter extends StatefulWidget {
-  const CalorieCounter({super.key});
+class calorieCounter extends StatefulWidget {
+  const calorieCounter({Key? key});
 
   @override
-  _CalorieCounterState createState() => _CalorieCounterState();
+  State<StatefulWidget> createState() => _calorieCounterState();
 }
 
-class _CalorieCounterState extends State<CalorieCounter> {
+class _calorieCounterState extends State<calorieCounter> {
   int _caloriesConsumed = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+        leading: BackButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop();
           },
         ),
         title: const Text('Calorie Counter'),
