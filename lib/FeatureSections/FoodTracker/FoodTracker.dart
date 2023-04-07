@@ -9,6 +9,8 @@ class FoodTracker extends StatefulWidget {
 }
 
 class _FoodTrackerState extends State<FoodTracker> {
+  //variables
+
   String? _gender;
   bool _isOver18 = false;
   double _height = 0;
@@ -17,6 +19,13 @@ class _FoodTrackerState extends State<FoodTracker> {
   bool _showBmi = false;
   bool _useMetricUnits = true;
   double _inches = 0;
+  bool isVisible = true; //will be visible for the first frame
+
+  // do not make final variables
+  TextEditingController _heightController = TextEditingController();
+  TextEditingController _weightController = TextEditingController();
+  TextEditingController _poundWeightController = TextEditingController();
+  TextEditingController _inchesHeightController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -102,25 +111,56 @@ class _FoodTrackerState extends State<FoodTracker> {
                 else
                   _buildPoundWeightField(),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    _calculateBMI();
-                  },
-                  child: const Text('Calculate BMI'),
+                Visibility(
+                  visible: isVisible,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _calculateBMI();
+                      setState(() {
+                        isVisible = !isVisible;
+                      });
+                    },
+                    child: const Text('Calculate BMI'),
+                  ),
                 ),
+                Visibility(
+                  visible: !isVisible,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const calorieCounter()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                    child: const Text('Continue'),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const calorieCounter()),
-                    );
+                    setState(() {
+                      // Reset the text fields
+                      _heightController.text = '';
+                      _weightController.text = '';
+                      _poundWeightController.text = '';
+                      _inchesHeightController.text = '';
+                      // reset the bmi
+                      _showBmi = false;
+                      isVisible = true;
+                    });
                   },
-                  child: const Text('Continue'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                  ),
+                  child: const Text('Reset'),
                 ),
               ],
             ),
-          if (_showBmi)
-            Text('Your BMI is: $_bmi'),
+          if (_showBmi) Text('Your BMI is: $_bmi'),
         ],
       ),
     );
@@ -134,8 +174,9 @@ class _FoodTrackerState extends State<FoodTracker> {
         SizedBox(
           width: 100,
           child: TextField(
+            controller: _heightController,
             decoration: InputDecoration(
-              labelText: _useMetricUnits ? 'Centimeters' : 'Feet',
+              labelText: _useMetricUnits ? 'Centimetres' : 'Feet',
             ),
             keyboardType: TextInputType.number,
             onChanged: (value) {
@@ -146,16 +187,14 @@ class _FoodTrackerState extends State<FoodTracker> {
           ),
         ),
         if (!_useMetricUnits) const Text('\''),
-        if (!_useMetricUnits)
-          const SizedBox(
-              width : 16
-          ),
+        if (!_useMetricUnits) const SizedBox(width: 16),
         if (_useMetricUnits)
           const SizedBox.shrink()
         else
           SizedBox(
             width: 100,
             child: TextField(
+              controller: _inchesHeightController,
               decoration: const InputDecoration(
                 labelText: 'Inches',
               ),
@@ -179,6 +218,7 @@ class _FoodTrackerState extends State<FoodTracker> {
         SizedBox(
           width: 100,
           child: TextField(
+            controller: _weightController,
             decoration: const InputDecoration(
               labelText: 'Kilograms',
             ),
@@ -202,6 +242,7 @@ class _FoodTrackerState extends State<FoodTracker> {
         SizedBox(
           width: 100,
           child: TextField(
+            controller: _poundWeightController,
             decoration: const InputDecoration(
               labelText: 'Pounds',
             ),
@@ -219,15 +260,20 @@ class _FoodTrackerState extends State<FoodTracker> {
 
   void _calculateBMI() {
     double heightInMeters = _height / 100;
+    double bmi;
+
     if (!_useMetricUnits) {
       heightInMeters = ((_height * 12) + _inches) * 0.0254;
       _weight = _weight * 0.453592;
     }
-    double bmi = _weight / (heightInMeters * heightInMeters);
+
+    bmi = _weight / (heightInMeters * heightInMeters);
+
     setState(() {
       _bmi = bmi;
       _showBmi = true;
     });
+
     _bmi = double.parse(_bmi.toStringAsFixed(1)); // format to one decimal place
   }
 }
