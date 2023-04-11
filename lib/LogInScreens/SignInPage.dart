@@ -13,6 +13,7 @@ class SignInPage extends StatefulWidget {
   State<SignInPage> createState() => _SignInPageState();
 }
 
+
 class _SignInPageState extends State<SignInPage> {
   //This allows for access to user input from email and password text boxes
   final TextEditingController _passwordTextController = TextEditingController();

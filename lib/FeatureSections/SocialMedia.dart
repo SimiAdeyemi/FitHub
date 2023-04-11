@@ -5,8 +5,27 @@ class SocialMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Social Media Content"),
+    return Scaffold(
+      body: Container(
+        alignment: Alignment.bottomCenter,
+        child: ElevatedButton(
+          child: const Text("Upload"),
+          onPressed: () {
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            elevation: 0,
+          ),
+
+        ),
+      ),
     );
   }
-}
+
+
+
+
+
+
+
+}//entire class
