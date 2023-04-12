@@ -36,9 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: EdgeInsets.fromLTRB(25, 120, 25, 0),
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     reusableTextField("Enter Username", Icons.person_outline, false,
                         _userNameTextController),
                     const SizedBox(height: 20),

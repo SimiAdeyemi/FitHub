@@ -1,36 +1,20 @@
 import 'package:flutter/material.dart';
 
   //Reusable widget that allows us the create multiple text fields more efficiently.
-  TextField reusableTextField(String text, IconData icon, bool isPasswordType, TextEditingController controller) {
-    return TextField(
-        controller: controller, //able to access the text input
-        obscureText: isPasswordType, //hides password as its inputted
-        enableSuggestions: !isPasswordType,
-        autocorrect: !isPasswordType,
-        cursorColor: Colors.black,
-        style: TextStyle(color: Colors.black.withOpacity(0.9)),
-        decoration: InputDecoration(
-            prefixIcon: Icon(
-                icon,
-                color: Colors.black
-            ),
-          labelText: text,
-          labelStyle: TextStyle(color: Colors.black.withOpacity(0.9)),
-          filled: true,
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-          //fillColor: Colors.black.withOpacity(0.9),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: const BorderSide(width: 0, style: BorderStyle.none))
-        ),
-        keyboardType: isPasswordType
-            ? TextInputType.visiblePassword
-            : TextInputType.emailAddress,
-    );
+TextFormField reusableTextField(String text, IconData icon, bool isPasswordType, TextEditingController controller) {
+  return TextFormField(
+    controller: controller,
+    obscureText: isPasswordType,
+    decoration: InputDecoration(
+      labelText: text,
+      prefixIcon: Icon(icon),
+      border: OutlineInputBorder(),
+      contentPadding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0),
+    ),
+  );
+}
 
-  }
-
-  //Reusable widget that allows us the create multiple buttons more efficiently.
+//Reusable widget that allows us the create multiple buttons more efficiently.
   Container firebaseButton(
       BuildContext context, String title, Function onTap) {
     return Container(

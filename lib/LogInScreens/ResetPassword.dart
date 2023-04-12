@@ -31,7 +31,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
+            padding: EdgeInsets.fromLTRB(25, 120, 25, 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -44,14 +44,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                     decoration: InputDecoration(
                       labelText: "Enter Email",
                       prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 16.0),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email.';
-                      } else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                      } else if (!RegExp(r'^[\w-d]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                         return 'Please enter a valid email address.';
                       }
                       return null;
