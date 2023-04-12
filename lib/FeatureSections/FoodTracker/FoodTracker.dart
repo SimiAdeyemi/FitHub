@@ -30,9 +30,6 @@ class _FoodTrackerState extends State<FoodTracker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Food Tracker'),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
