@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class _SignInPageState extends State<SignInPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final db = FirebaseFirestore.instance;
+
 
   @override
   //We return a Widget and the build function is whats builds our widget tree.
@@ -73,16 +76,23 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 const SizedBox(height: 5),
                 forgotPassword(context),
-                firebaseButton(context, "Sign In", () {
+                firebaseButton(context, "Sign In", () async {
                   if (_formKey.currentState!.validate()) {
-                    FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text).then((value) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                    }).onError((error, stackTrace) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('There was an error signing in. Please try again later.'),
-                      ));
-                      print("Error ${error.toString()}");
-                    });
+                    //Sign in the user with auth and get the user auth info back
+                    UserCredential user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailTextController.text,
+                      password: _passwordTextController.text,
+                    );
+                    //Get the user's uid
+                    String? uid = user.user?.uid;
+                    //Query the "Users" collection in Firestore using the uid and retrieve the displayName
+                    QuerySnapshot userQuery = await FirebaseFirestore.instance
+                        .collection('Users')
+                        .where('uid', isEqualTo: uid)
+                        .get();
+                    String displayName = userQuery.docs.first['displayName'];
+
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                   }
                 }),
                 signUpOption()
