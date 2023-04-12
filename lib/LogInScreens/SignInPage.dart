@@ -6,6 +6,7 @@ import 'package:group_project/HomePage.dart';
 import 'package:group_project/LogInScreens/ResetPassword.dart';
 import 'package:group_project/LogInScreens/SignUpPage.dart';
 import '../ReusableWidgets.dart';
+import 'package:group_project/globals.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -90,7 +91,8 @@ class _SignInPageState extends State<SignInPage> {
                         .collection('Users')
                         .where('uid', isEqualTo: uid)
                         .get();
-                    String displayName = userQuery.docs.first['displayName'];
+
+                    displayName = userQuery.docs.first['displayName'];
 
                     Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                   }

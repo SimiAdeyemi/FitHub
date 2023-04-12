@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../HomePage.dart';
 import '../ReusableWidgets.dart';
+import 'package:group_project/globals.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -103,6 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               email: _emailTextController.text,
                               password: _passwordTextController.text);
                             userSetup(_userNameTextController.text);
+                            displayName = _userNameTextController.text;
                             Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                          }}
                       )
