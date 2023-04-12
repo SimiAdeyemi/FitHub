@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../HomePage.dart';
@@ -16,6 +17,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _userNameTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  final db = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -95,14 +99,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       const SizedBox(height: 20),
                       firebaseButton(context, "Sign Up", () async {
                          if (_formKey.currentState!.validate()) {
-                            FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            UserCredential user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
                               email: _emailTextController.text,
-                              password: _passwordTextController.text).then((value) {
-                                print("Created New Account");
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                          }).onError((error, stackTrace) {
-                              print("Error ${error.toString()}");
-                            });
+                              password: _passwordTextController.text);
+                            userSetup(_userNameTextController.text);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                          }}
                       )
                     ],
@@ -113,5 +114,15 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
     );
   }
+
+  //This method is used to create the user in firestore
+  Future<void> userSetup(String displayName) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String? uid = auth.currentUser?.uid.toString();
+    users.add({'displayName': displayName, 'uid': uid});
+    return;
+  }
+
 }
 
