@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'FeatureSections/ChatBot.dart';
-import 'FeatureSections/FoodTracker/FoodTracker.dart';
+import 'FeatureSections/FoodTracker/Screens/FoodTracker.dart';
 import 'FeatureSections/More.dart';
 import 'FeatureSections/SocialMedia.dart';
 
