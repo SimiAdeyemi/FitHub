@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
   //Reusable widget that allows us the create multiple text fields more efficiently.
-TextFormField reusableTextField(String text, IconData icon, bool isPasswordType, TextEditingController controller) {
+TextFormField reusableTextField(String text, IconData icon, bool isPasswordType, TextEditingController controller, String? Function(String?) validator) {
   return TextFormField(
     controller: controller,
     obscureText: isPasswordType,
@@ -11,6 +11,7 @@ TextFormField reusableTextField(String text, IconData icon, bool isPasswordType,
       border: OutlineInputBorder(),
       contentPadding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0),
     ),
+    validator: validator,
   );
 }
 

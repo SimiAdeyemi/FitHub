@@ -37,10 +37,11 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: _emailTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Email",
                     prefixIcon: Icon(Icons.email_outlined),
                     border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -51,13 +52,14 @@ class _SignInPageState extends State<SignInPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
                 TextFormField(
                   controller: _passwordTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Password",
                     prefixIcon: Icon(Icons.lock_outline),
                     border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 16.0),
                   ),
                   obscureText: true,
                   validator: (value) {
@@ -76,7 +78,7 @@ class _SignInPageState extends State<SignInPage> {
                     FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text).then((value) {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                     }).onError((error, stackTrace) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('There was an error signing in. Please try again later.'),
                       ));
                       print("Error ${error.toString()}");
@@ -117,7 +119,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget forgotPassword(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 35,
+      height: 40,
       alignment: Alignment.bottomRight,
       child: TextButton(
           child: const Text(
