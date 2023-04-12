@@ -18,36 +18,77 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   //We return a Widget and the build function is whats builds our widget tree.
   Widget build(BuildContext context) {
-    //The Scaffold widget allows us to create a layout in our app.
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(25, MediaQuery.of(context).size.height * 0.2, 25, 0),
-            child: Column( //Allows us to display multiple items vertically
+      key: _scaffoldKey,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(25, MediaQuery.of(context).size.height * 0.2, 25, 0),
+          child: Form(
+            key: _formKey,
+            child: Column(
               children: <Widget>[
-                const Text("FitHub", style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.green),
+                const Text("FitHub", style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.green)),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _emailTextController,
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    prefixIcon: Icon(Icons.email_outlined),
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email.';
+                    } else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                      return 'Please enter a valid email address.';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
-                reusableTextField("Email", Icons.email_outlined, false, _emailTextController),
-                const SizedBox(height: 10),
-                reusableTextField("Password", Icons.lock_outline, true, _passwordTextController),
+                TextFormField(
+                  controller: _passwordTextController,
+                  decoration: InputDecoration(
+                    labelText: "Password",
+                    prefixIcon: Icon(Icons.lock_outline),
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password.';
+                    } else if (value.length < 6) {
+                      return 'Your password must be at least 6 characters long.';
+                    }
+                    return null;
+                  },
+                ),
                 const SizedBox(height: 5),
                 forgotPassword(context),
-                firebaseButton(context, "Sign In", () { //when pressed the values are checked if account exists in Firebase
-                  FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text).then((value) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                  }).onError((error, stackTrace) {
-                    print("Error ${error.toString()}");
-                  });
+                firebaseButton(context, "Sign In", () {
+                  if (_formKey.currentState!.validate()) {
+                    FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text).then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    }).onError((error, stackTrace) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('There was an error signing in. Please try again later.'),
+                      ));
+                      print("Error ${error.toString()}");
+                    });
+                  }
                 }),
                 signUpOption()
               ],
             ),
           ),
-        )
+        ),
+      ),
     );
   }
 
