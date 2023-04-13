@@ -5,6 +5,10 @@ import 'FeatureSections/More.dart';
 import 'FeatureSections/SocialMedia.dart';
 
 class HomePage extends StatefulWidget {
+  final int initialIndex;
+
+  HomePage({Key? key, this.initialIndex = 0}) : super(key: key);
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -13,8 +17,13 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
+
   Widget build(BuildContext context) {
-    const List<Widget> _pages = <Widget>[SocialMedia(), FoodTracker(), ChatBot()];
+    const List<Widget> _pages = <Widget>[FoodTracker(), SocialMedia(), ChatBot()];
 
     return Scaffold(
       appBar: AppBar(
@@ -40,12 +49,12 @@ class _HomePageState extends State<HomePage> {
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.phone_android),
-            label: 'Social Media',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.food_bank_outlined),
             label: 'Food Tracker',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.phone_android),
+            label: 'Social Media',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.computer),
