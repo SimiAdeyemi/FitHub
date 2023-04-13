@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:group_project/FeatureSections/FoodTracker/uuid.dart';
 
-// ignore: camel_case_types
 @JsonSerializable()
 class foodTask {
+  late String id;
   late String foodName;
   late num calories;
   late num carbs;
@@ -22,11 +23,13 @@ class foodTask {
     required this.mealTime,
     required this.createdOn,
     required this.grams,
-  });
+    String? id,
+  }) : id = id ?? Uuid().generateV4();
 
   factory foodTask.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return foodTask(
+      id: data['id'],
       foodName: data['food_name'],
       calories: data['calories'],
       carbs: data['carbs'],
@@ -40,8 +43,9 @@ class foodTask {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'mealTime': mealTime,
-      'food_name': foodName,
+      'foodName': foodName,
       'calories': calories,
       'carbs': carbs,
       'protein': protein,
@@ -53,7 +57,8 @@ class foodTask {
 
   factory foodTask.fromJson(Map<String, dynamic> json) {
     return foodTask(
-      foodName: json['food_name'],
+      id: json['id'],
+      foodName: json['foodName'],
       calories: json['calories'],
       carbs: json['carbs'],
       protein: json['protein'],
@@ -65,6 +70,7 @@ class foodTask {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
+    'id': id,
     'mealTime': mealTime,
     'food_name': foodName,
     'calories': calories,
