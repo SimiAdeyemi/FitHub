@@ -5,7 +5,6 @@ import 'FeatureSections/More.dart';
 import 'FeatureSections/SocialMedia.dart';
 
 class HomePage extends StatefulWidget {
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -15,7 +14,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const List<Widget> _pages = <Widget>[SocialMedia(), FoodTracker(), ChatBot(), More()];
+    const List<Widget> _pages = <Widget>[SocialMedia(), FoodTracker(), ChatBot()];
 
     return Scaffold(
       appBar: AppBar(
@@ -23,6 +22,14 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.green,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_horiz),
+            onPressed: () {
+              Navigator.of(context).push(_createMorePageRoute());
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 25,
@@ -44,10 +51,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.computer),
             label: 'Chat Bot',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz_outlined),
-            label: 'More',
-          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -64,5 +67,21 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
   }
-}
 
+  Route _createMorePageRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => More(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+}
