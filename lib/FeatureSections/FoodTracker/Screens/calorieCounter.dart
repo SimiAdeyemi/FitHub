@@ -20,6 +20,17 @@ class calorieCounter extends StatefulWidget {
 }
 
 class _calorieCounterState extends State<calorieCounter> {
+
+  String title = 'Add Food';
+  double servingSize = 0;
+  String dropdownValue = 'grams';
+  DateTime _value = DateTime.now();
+  DateTime today = DateTime.now();
+  Color _rightArrowColor = Color(0xffC1C1C1);
+  Color _leftArrowColor = Color(0xffC1C1C1);
+  final _addFoodKey = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
