@@ -8,18 +8,12 @@ class DatabaseService {
   DatabaseService({required this.uid, required this.currentDate});
 
   final DateTime today =
-  DateTime(DateTime
-      .now()
-      .year, DateTime
-      .now()
-      .month, DateTime
-      .now()
-      .day);
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   final DateTime weekStart = DateTime(2020, 09, 07);
 
   // collection reference
   final CollectionReference foodTrackCollection =
-  FirebaseFirestore.instance.collection('foodTracks');
+      FirebaseFirestore.instance.collection('foodTracks');
 
   Future addFoodTrackEntry(foodTask food) async {
     return await foodTrackCollection

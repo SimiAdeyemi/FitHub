@@ -1,8 +1,8 @@
-import 'package:group_project/FeatureSections/FoodTracker/Model/foodTask.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:group_project/FeatureSections/FoodTracker/Model/foodTask.dart';
 import 'package:group_project/FeatureSections/FoodTracker/colours.dart';
+import 'package:provider/provider.dart';
 
 class caloriesStats extends StatelessWidget {
   DateTime datePicked;

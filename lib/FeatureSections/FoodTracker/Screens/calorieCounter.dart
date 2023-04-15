@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
+import 'package:group_project/FeatureSections/FoodTracker/Model/foodTask.dart';
+import 'package:group_project/FeatureSections/FoodTracker/caloriesStats.dart';
+import 'package:provider/provider.dart';
+import 'package:group_project/FeatureSections/FoodTracker/foodDatabase/databaseFoodTracks.dart';
+
+// import 'package:openfoodfacts/model/Product.dart';
+// import 'package:openfoodfacts/openfoodfacts.dart';
+import 'dart:math';
+import 'package:group_project/FeatureSections/FoodTracker/colours.dart';
+// import 'package:calorie_tracker_app/src/utils/constants.dart';
 
 class calorieCounter extends StatefulWidget {
-  const calorieCounter({Key? key});
+  const calorieCounter();
 
   @override
   State<StatefulWidget> createState() => _calorieCounterState();
 }
 
 class _calorieCounterState extends State<calorieCounter> {
-  int _caloriesConsumed = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,21 +30,6 @@ class _calorieCounterState extends State<calorieCounter> {
           },
         ),
         title: const Text('Calorie Counter'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Calories Consumed:',
-              style: TextStyle(fontSize: 24),
-            ),
-            Text(
-              '$_caloriesConsumed',
-              style: const TextStyle(fontSize: 48),
-            ),
-          ],
-        ),
       ),
     );
   }
