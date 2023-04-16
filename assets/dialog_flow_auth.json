@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fithubbot-vseb",
+  "private_key_id": "17f5e00801f8e106284ac8f6989f2972d196fc13",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQChyFu7QrboYC9j\nFei7XTgePheTnOjHp3GJpBQ2jrVBR/UN1JKJf/DsI4I2sXyFrWrnPJCB9GsHaYsS\nr0qdC1Nq6LGVAbGwcR0ruPNPBm+ia8mGDm1GspH1jHBcnZz0VDK2jb7XkyvSAlbE\nrk7Dz98SqMWRY4lMdkJvZh6tgQfUIgqhysLOqDPbtVeFZzCxxTxMBCdhySoWCpTh\nvDbDS41GkqJ/HLsGoPiTxwPvwazvjHRVZHySQwf4HppNbv+VjoD1y/KjuT3V7VFx\ng8RqU78hJUfx4UZoZB5jPSsEbKcF4US4cOXMpsvtGr8btPjYAyQo41oST+VyaZB5\nwIfrwjKdAgMBAAECggEAJynKIPb5sZ+FISKe2+ppSRLlYK+xfxFm7/enB/z8XjD1\n3rL4hS4SS4ud/DDzcKXGFPOJlNfu59SyHKQP9xvUhfMN+AD4u3pqYhjr11O6xvH6\nTwgjhmN4Z11nntfttIzEWQJPsj5Xc4dq60I54Xdq7AisiPE0Paz8EJ0DLKOpWj2/\n1BYo2eN8EzvK9IXcFhTdJmEUc6AC6tbb+XEon9mILSZfBu56UAUx+m3slQqEfE7B\n18orE3xIqxAe5t8Qqz1RSMHQV6AZITyAz7aMSGX7z8AyAup2o3yQ9GeshGCboCze\nXrkXoboRlPi/y1vZJ1kqswn/lAWqIKrqRzhH0KJm6QKBgQDOk8vODBzHE4rq1FJb\nXaZjimgdqsLbIcdwsktaiSSASVcyO3cn6n2CnyhvD1bybyQbrAuazR1Wh/FB7lpE\nEhm/F1aoRDo89khguIOtF+AEl69GlG/ewhyjiqCrztWiIgX/xE6wR83K/1xpIyAI\nTr/nSUcsMgSwhc3vgesysoGaeQKBgQDIfQfcQIMXT9nN1wJKc5uCP8fHRR5NdLQd\nhSjJM8OX9gXA/3NB5Trxe1LdhfVqm+qPhkdQyTxtRLWFV/xMGlToXoXs8LFCmY/P\nFj0fghUZ9bdH6mUWgBfYnYBoojjiIK/TTKiWWSzgK8+U0xlCBZetxs0bXxPeWeMR\nzcLAU4wQRQKBgHrKx56W/JQpPa4Qv1On+zu4DeN0mZcAITkQAlKyqovHDJnDVzTW\n4fw+9x3tFFXPUrtQLSW7PvEspW/3apiD2eII0W38AFI0Yxl7FGpTgsm4EGv31/el\nkrhzssXtkHdrmf1Khyupwt4jpJ6qTmQhy1iD6laO9NKo9pyjsVbVXMyhAoGBAJrE\n6mx84LX+ToU4lewjksjZs7+A/AOPM/wV74ZjD3sf0RFMIg2ciAQiz7Vy1CGYe1qQ\nrj0PHDa98+McKQgWy7UWQwzGQhDHutyCrmzEXsXLidFagO79s2rlK1ua346w7QqR\nAxQNgzcKmxSoYbc12gGslmmq3AuqGECGNvGBjX6BAoGBAKTHQy2CydVXjKShIEKI\nVaswZNeDUr+IZYwX7012z7MI78t3YxEdA+VIC+3IkoQsDj3+gCSvn4GH7RnG4+ev\nwkrfDGd4wNuEnX2vTYv/N5RIVG3xZdoXELR29puPNV6tIte1rsFBGjbrkKpjRnxk\nCZOEWVpCq2OmrMNXlX5wssN6\n-----END PRIVATE KEY-----\n",
+  "client_email": "fithubchatbot@fithubbot-vseb.iam.gserviceaccount.com",
+  "client_id": "101880952944524407519",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fithubchatbot%40fithubbot-vseb.iam.gserviceaccount.com"
+}
