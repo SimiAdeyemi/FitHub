@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class caloriesStats extends StatelessWidget {
   DateTime datePicked;
   DateTime today = DateTime.now();
-  caloriesStats({required this.datePicked});
+  caloriesStats({super.key, required this.datePicked});
   num totalCalories = 0;
   num totalCarbs = 0;
   num totalFat = 0;
@@ -31,23 +31,23 @@ class caloriesStats extends StatelessWidget {
     final foodTracks = Provider.of<List<foodTask>>(context);
     List findCurScans(List<foodTask> foodTracks) {
       List currentFoodTracks = [];
-      foodTracks.forEach((foodTrack) {
+      for (var foodTrack in foodTracks) {
         DateTime trackDate = DateTime(foodTrack.createdOn.year,
             foodTrack.createdOn.month, foodTrack.createdOn.day);
         if (trackDate.compareTo(curDate) == 0) {
           currentFoodTracks.add(foodTrack);
         }
-      });
+      }
       return currentFoodTracks;
     }
     List currentFoodTracks = findCurScans(foodTracks);
     void findNutriments(List foodTracks) {
-      foodTracks.forEach((scan) {
+      for (var scan in foodTracks) {
         totalCarbs += scan.carbs;
         totalFat += scan.fat;
         totalProtein += scan.protein;
         displayCalories += scan.calories;
-      });
+      }
       totalCalories = 9 * totalFat + 4 * totalCarbs + 4 * totalProtein;
     }
     findNutriments(currentFoodTracks);

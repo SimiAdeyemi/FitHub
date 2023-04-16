@@ -9,7 +9,7 @@ class DatabaseService {
 
   final DateTime today =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  final DateTime weekStart = DateTime(2020, 09, 07);
+  final DateTime weekStart = DateTime(2023, 04, 09);
 
   // collection reference
   final CollectionReference foodTrackCollection =
@@ -19,7 +19,7 @@ class DatabaseService {
     return await foodTrackCollection
         .doc(food.createdOn.millisecondsSinceEpoch.toString())
         .set({
-      'food_name': food.foodName,
+      'foodName': food.foodName,
       'calories': food.calories,
       'carbs': food.carbs,
       'fat': food.fat,
@@ -41,7 +41,7 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return foodTask(
         id: doc.id,
-        foodName: doc['food_name'] ?? '',
+        foodName: doc['foodName'] ?? '',
         calories: doc['calories'] ?? 0,
         carbs: doc['carbs'] ?? 0,
         fat: doc['fat'] ?? 0,
