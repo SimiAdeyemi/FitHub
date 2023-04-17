@@ -322,6 +322,7 @@ class _calorieCounterState extends State<calorieCounter> {
                   fontFamily: 'Open Sans',
                   fontSize: 18.0,
                   fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 )),
           ),
           IconButton(
@@ -432,7 +433,7 @@ class _calorieCounterState extends State<calorieCounter> {
               ],
             ),
           ),
-          title: Text('Calorie Counter - ${_dateFormatter(_value)}'),
+          title: const Text('Calorie Counter'),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.calendar_today),

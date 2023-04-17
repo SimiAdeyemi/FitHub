@@ -30,21 +30,16 @@ class foodTask {
 
   factory foodTask.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    try {
-      return foodTask(
-        foodName: data['foodName'],
-        calories: data['calories'],
-        carbs: data['carbs'],
-        protein: data['protein'],
-        fat: data['fat'],
-        mealTime: data['mealTime'],
-        grams: data['grams'],
-        createdOn: data['createdOn'].toDate(),
-      );
-    } catch (e) {
-      print('Error parsing foodTask from Firestore: $e');
-      rethrow;
-    }
+    return foodTask(
+      foodName: data['foodName'],
+      calories: data['calories'],
+      carbs: data['carbs'],
+      protein: data['protein'],
+      fat: data['fat'],
+      mealTime: data['mealTime'],
+      grams: data['grams'],
+      createdOn: data['createdOn'].toDate(),
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -74,14 +69,14 @@ class foodTask {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'id': id,
-    'mealTime': mealTime,
-    'foodName': foodName,
-    'calories': calories,
-    'carbs': carbs,
-    'protein': protein,
-    'fat': fat,
-    'grams': grams,
-    'createdOn': createdOn.toString(),
-  };
+        'id': id,
+        'mealTime': mealTime,
+        'foodName': foodName,
+        'calories': calories,
+        'carbs': carbs,
+        'protein': protein,
+        'fat': fat,
+        'grams': grams,
+        'createdOn': createdOn.toString(),
+      };
 }
