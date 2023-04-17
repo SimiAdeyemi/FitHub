@@ -416,6 +416,7 @@ class _calorieCounterState extends State<calorieCounter> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
         child: AppBar(
+          backgroundColor: Colors.green,
           leading: BackButton(
             onPressed: () {
               Navigator.of(context).pop();

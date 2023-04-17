@@ -33,6 +33,19 @@ class _FoodTrackerState extends State<FoodTracker> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const calorieCounter()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+            ),
+            child: const Text('Skip BMI'),
+          ),
+          const SizedBox(height: 16),
           const Text(
             'Please select your gender:',
             textAlign: TextAlign.center,
