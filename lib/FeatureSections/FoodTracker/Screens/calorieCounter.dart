@@ -119,11 +119,11 @@ class _calorieCounterState extends State<calorieCounter> {
   }
 
   checkFormValid() {
-    if (addFoodTrack.calories != 0 &&
-        addFoodTrack.carbs != 0 &&
-        addFoodTrack.protein != 0 &&
-        addFoodTrack.fat != 0 &&
-        addFoodTrack.grams != 0) {
+    if (addFoodTrack.calories >= 0.0 &&
+        addFoodTrack.carbs >= 0.0 &&
+        addFoodTrack.protein >= 0.0 &&
+        addFoodTrack.fat >= 0.0 &&
+        addFoodTrack.grams >= 0.0) {
       return true;
     }
     return false;
@@ -207,7 +207,7 @@ class _calorieCounterState extends State<calorieCounter> {
           keyboardType: TextInputType.number,
           onChanged: (value) {
             try {
-              addFoodTrack.calories = int.parse(value);
+              addFoodTrack.calories = double.parse(value);
             } catch (e) {
               // return "Please enter numeric values"
               addFoodTrack.calories = 0;
@@ -227,7 +227,7 @@ class _calorieCounterState extends State<calorieCounter> {
           keyboardType: TextInputType.number,
           onChanged: (value) {
             try {
-              addFoodTrack.carbs = int.parse(value);
+              addFoodTrack.carbs = double.parse(value);
             } catch (e) {
               addFoodTrack.carbs = 0;
             }
@@ -245,7 +245,7 @@ class _calorieCounterState extends State<calorieCounter> {
           },
           onChanged: (value) {
             try {
-              addFoodTrack.protein = int.parse(value);
+              addFoodTrack.protein = double.parse(value);
             } catch (e) {
               addFoodTrack.protein = 0;
             }
@@ -262,7 +262,7 @@ class _calorieCounterState extends State<calorieCounter> {
           },
           onChanged: (value) {
             try {
-              addFoodTrack.fat = int.parse(value);
+              addFoodTrack.fat = double.parse(value);
             } catch (e) {
               addFoodTrack.fat = 0;
             }
@@ -287,7 +287,7 @@ class _calorieCounterState extends State<calorieCounter> {
           ],
           onChanged: (value) {
             try {
-              addFoodTrack.grams = int.parse(value);
+              addFoodTrack.grams = double.parse(value);
             } catch (e) {
               addFoodTrack.grams = 0;
             }
@@ -447,8 +447,8 @@ class _calorieCounterState extends State<calorieCounter> {
         value: DatabaseService(uid: "fithub-5df39", currentDate: DateTime.now())
             .foodTracks
             .handleError((error, stackTrace) {
-          print('Error occurred: $error');
-          print('Stack trace: $stackTrace');
+          // print('Error occurred: $error');
+          // print('Stack trace: $stackTrace');
           return [];
         }),
         child: Column(children: <Widget>[
@@ -478,13 +478,13 @@ class FoodTrackList extends StatelessWidget {
 
     List findCurScans(List foodTrackFeed) {
       List curScans = [];
-      foodTrackFeed.forEach((foodTrack) {
+      for (var foodTrack in foodTrackFeed) {
         DateTime scanDate = DateTime(foodTrack.createdOn.year,
             foodTrack.createdOn.month, foodTrack.createdOn.day);
         if (scanDate.compareTo(curDate) == 0) {
           curScans.add(foodTrack);
         }
-      });
+      }
       return curScans;
     }
 
@@ -567,7 +567,7 @@ class FoodTrackTile extends StatelessWidget {
     return Row(
       children: <Widget>[
         SizedBox(
-          width: 200,
+          width: 350,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -584,7 +584,7 @@ class FoodTrackTile extends StatelessWidget {
                   Text(' ${foodTrackEntry.carbs.toStringAsFixed(1)}g    ',
                       style: const TextStyle(
                         fontSize: 12.0,
-                        color: Colors.white,
+                        color: Colors.yellow,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
                       )),
@@ -599,7 +599,7 @@ class FoodTrackTile extends StatelessWidget {
                   Text(' ${foodTrackEntry.protein.toStringAsFixed(1)}g    ',
                       style: const TextStyle(
                         fontSize: 12.0,
-                        color: Colors.white,
+                        color: Colors.red,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
                       )),
@@ -614,19 +614,20 @@ class FoodTrackTile extends StatelessWidget {
                   Text(' ${foodTrackEntry.fat.toStringAsFixed(1)}g',
                       style: const TextStyle(
                         fontSize: 12.0,
-                        color: Colors.white,
+                        color: Colors.blue,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
                       )),
                 ],
               ),
-              Text('${foodTrackEntry.grams}g',
-                  style: const TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.white,
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.w300,
-                  )),
+              Expanded(
+                  child: Text(' Total grams: ${foodTrackEntry.grams}g',
+                      style: const TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.black,
+                        fontFamily: 'Open Sans',
+                        fontWeight: FontWeight.w300,
+                      ))),
             ],
           ),
         )
@@ -654,10 +655,10 @@ class FoodTrackTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        const Text('% of total',
+        const Text('Percentage(%) of total',
             style: TextStyle(
               fontSize: 14.0,
-              color: Colors.white,
+              color: Colors.black,
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w400,
             )),
@@ -665,7 +666,7 @@ class FoodTrackTile extends StatelessWidget {
             icon: const Icon(Icons.delete),
             iconSize: 16,
             onPressed: () async {
-              print("Delete button pressed");
+              // print("Delete button pressed");
               databaseService.deleteFoodTrackEntry(foodTrackEntry);
             }),
       ],
@@ -713,7 +714,7 @@ class FoodTrackTile extends StatelessWidget {
               value: carbsValue,
               backgroundColor: const Color(0xffEDEDED),
               valueColor:
-                  const AlwaysStoppedAnimation<Color>(Color(0xffFA5457)),
+                  const AlwaysStoppedAnimation<Color>(Color(0xFFFFC800)),
             ),
           ),
           Text('      ${((carbsValue) * 100).toStringAsFixed(0)}%'),
@@ -738,7 +739,7 @@ class FoodTrackTile extends StatelessWidget {
               value: proteinValue,
               backgroundColor: const Color(0xffEDEDED),
               valueColor:
-                  const AlwaysStoppedAnimation<Color>(Color(0xffFA8925)),
+                  const AlwaysStoppedAnimation<Color>(Color(0x80FF0000)),
             ),
           ),
           Text('      ${((proteinValue) * 100).toStringAsFixed(0)}%'),
@@ -763,7 +764,7 @@ class FoodTrackTile extends StatelessWidget {
               value: (foodTrackEntry.fat / macros[3]),
               backgroundColor: const Color(0xffEDEDED),
               valueColor:
-                  const AlwaysStoppedAnimation<Color>(Color(0xff01B4BC)),
+                  const AlwaysStoppedAnimation<Color>(Color(0xFF0000FF)),
             ),
           ),
           Text('      ${((fatValue) * 100).toStringAsFixed(0)}%'),
