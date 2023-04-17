@@ -16,7 +16,6 @@ class DatabaseService {
   FirebaseFirestore.instance.collection('foodTracks');
 
   Future addFoodTrackEntry(foodTask food) async {
-    print('Adding food entry: $food');
     return await foodTrackCollection
         .doc(food.createdOn.millisecondsSinceEpoch.toString())
         .set({
@@ -32,7 +31,6 @@ class DatabaseService {
   }
 
   Future deleteFoodTrackEntry(foodTask deleteEntry) async {
-    print('Deleting food entry: $deleteEntry');
     return await foodTrackCollection
         .doc(deleteEntry.createdOn.millisecondsSinceEpoch.toString())
         .delete();
