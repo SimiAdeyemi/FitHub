@@ -8,10 +8,12 @@ import 'dart:math';
 import 'package:group_project/FeatureSections/FoodTracker/colours.dart';
 
 class calorieCounter extends StatefulWidget {
-  const calorieCounter();
+  const calorieCounter({super.key});
 
   @override
-  State<StatefulWidget> createState() => _calorieCounterState();
+  State<StatefulWidget> createState() {
+    return _calorieCounterState();
+  }
 }
 
 class _calorieCounterState extends State<calorieCounter> {
@@ -20,12 +22,12 @@ class _calorieCounterState extends State<calorieCounter> {
   String dropdownValue = 'grams';
   DateTime _value = DateTime.now();
   DateTime today = DateTime.now();
-  Color _rightArrowColor = Color(0xffC1C1C1);
-  Color _leftArrowColor = Color(0xffC1C1C1);
+  Color _rightArrowColor = const Color(0xff000000);
+  final Color _leftArrowColor = const Color(0xff000000);
   final _addFoodKey = GlobalKey<FormState>();
 
   DatabaseService databaseService =
-  new DatabaseService(uid: "fithub-5df39", currentDate: DateTime.now());
+      DatabaseService(uid: "fithub-5df39", currentDate: DateTime.now());
 
   late foodTask addFoodTrack;
 
@@ -58,15 +60,15 @@ class _calorieCounterState extends State<calorieCounter> {
 
   Widget _counter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-      child: new Container(
+      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey.withOpacity(0.5),
-                  width: 1.5,
-                ))),
+              color: Colors.grey.withOpacity(0.5),
+              width: 1.5,
+            ))),
         height: 220,
         child: Row(
           children: <Widget>[
@@ -79,7 +81,7 @@ class _calorieCounterState extends State<calorieCounter> {
 
   Widget _addFoodButton() {
     return IconButton(
-      icon: Icon(Icons.add_box),
+      icon: const Icon(Icons.add_box),
       iconSize: 25,
       color: Colors.white,
       onPressed: () async {
@@ -93,8 +95,8 @@ class _calorieCounterState extends State<calorieCounter> {
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _value,
-      firstDate: new DateTime(2019),
-      lastDate: new DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -109,10 +111,11 @@ class _calorieCounterState extends State<calorieCounter> {
   }
 
   void _stateSetter() {
-    if (today.difference(_value).compareTo(Duration(days: 1)) == -1) {
-      setState(() => _rightArrowColor = Color(0xffEDEDED));
-    } else
+    if (today.difference(_value).compareTo(const Duration(days: 1)) == -1) {
+      setState(() => _rightArrowColor = const Color(0xffEDEDED));
+    } else {
       setState(() => _rightArrowColor = Colors.white);
+    }
   }
 
   checkFormValid() {
@@ -136,13 +139,13 @@ class _calorieCounterState extends State<calorieCounter> {
             actions: <Widget>[
               OutlinedButton(
                 onPressed: () => Navigator.pop(context), // passing false
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
               OutlinedButton(
                 onPressed: () async {
                   if (checkFormValid()) {
                     Navigator.pop(context);
-                    var random = new Random();
+                    var random = Random();
                     int randomMilliSecond = random.nextInt(1000);
                     addFoodTrack.createdOn = _value;
                     addFoodTrack.createdOn = addFoodTrack.createdOn
@@ -150,14 +153,14 @@ class _calorieCounterState extends State<calorieCounter> {
                     databaseService.addFoodTrackEntry(addFoodTrack);
                     resetFoodTrack();
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
                           "Invalid form data! All numeric fields must contain numeric values greater than 0"),
                       backgroundColor: Colors.white,
                     ));
                   }
                 },
-                child: Text('Ok'),
+                child: const Text('Ok'),
               ),
             ],
           );
@@ -165,7 +168,7 @@ class _calorieCounterState extends State<calorieCounter> {
   }
 
   Widget _showAmountHad() {
-    return new Scaffold(
+    return Scaffold(
       body: Column(children: <Widget>[
         _showAddFoodForm(),
         _showUserAmount(),
@@ -270,11 +273,11 @@ class _calorieCounterState extends State<calorieCounter> {
   }
 
   Widget _showUserAmount() {
-    return new Expanded(
-      child: new TextField(
+    return Expanded(
+      child: TextField(
           maxLines: 1,
           autofocus: true,
-          decoration: new InputDecoration(
+          decoration: const InputDecoration(
               labelText: 'Grams *',
               hintText: 'eg. 100',
               contentPadding: EdgeInsets.all(0.0)),
@@ -297,7 +300,7 @@ class _calorieCounterState extends State<calorieCounter> {
 
   Widget _showDatePicker() {
     return SizedBox(
-      width: 500,
+      width: 700,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -313,33 +316,35 @@ class _calorieCounterState extends State<calorieCounter> {
             },
           ),
           TextButton(
-            // textColor: Colors.white,
             onPressed: () => _selectDate(),
-            // },
             child: Text(_dateFormatter(_value),
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Open Sans',
                   fontSize: 18.0,
                   fontWeight: FontWeight.w700,
                 )),
           ),
           IconButton(
-              icon: Icon(Icons.arrow_right, size: 25.0),
+              icon: const Icon(Icons.arrow_right, size: 25.0),
               color: _rightArrowColor,
               onPressed: () {
-                if (today.difference(_value).compareTo(Duration(days: 1)) ==
+                if (today
+                        .difference(_value)
+                        .compareTo(const Duration(days: 1)) ==
                     -1) {
                   setState(() {
-                    _rightArrowColor = Color(0xffC1C1C1);
+                    _rightArrowColor = const Color(0xffC1C1C1);
                   });
                 } else {
                   setState(() {
-                    _value = _value.add(Duration(days: 1));
+                    _value = _value.add(const Duration(days: 1));
                   });
-                  if (today.difference(_value).compareTo(Duration(days: 1)) ==
+                  if (today
+                          .difference(_value)
+                          .compareTo(const Duration(days: 1)) ==
                       -1) {
                     setState(() {
-                      _rightArrowColor = Color(0xffC1C1C1);
+                      _rightArrowColor = const Color(0xffC1C1C1);
                     });
                   }
                 }
@@ -350,9 +355,9 @@ class _calorieCounterState extends State<calorieCounter> {
   }
 
   String _dateFormatter(DateTime tm) {
-    DateTime today = new DateTime.now();
-    Duration oneDay = new Duration(days: 1);
-    Duration twoDay = new Duration(days: 2);
+    DateTime today = DateTime.now();
+    Duration oneDay = const Duration(days: 1);
+    Duration twoDay = const Duration(days: 2);
     String month;
     switch (tm.month) {
       case 1:
@@ -408,30 +413,45 @@ class _calorieCounterState extends State<calorieCounter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              _showDatePicker(),
-              _addFoodButton(),
-            ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80.0),
+        child: AppBar(
+          leading: BackButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _showDatePicker(),
+                _addFoodButton(),
+              ],
+            ),
+          ),
+          title: Text('Calorie Counter - ${_dateFormatter(_value)}'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.calendar_today),
+              onPressed: () {
+                _selectDate();
+              },
+            ),
+          ],
         ),
-        title: const Text('Calorie Counter'),
       ),
       body: StreamProvider<List<foodTask>>.value(
-        initialData: [],
-        value: DatabaseService(
-            uid: "fithub-5df39", currentDate: DateTime.now()).foodTracks
-            .handleError((error) => print('Error occurred: $error')),
-        child: new Column(children: <Widget>[
+        initialData: const [],
+        value: DatabaseService(uid: "fithub-5df39", currentDate: DateTime.now())
+            .foodTracks
+            .handleError((error, stackTrace) {
+          print('Error occurred: $error');
+          print('Stack trace: $stackTrace');
+          return [];
+        }),
+        child: Column(children: <Widget>[
           _counter(),
           Expanded(
             child: ListView(
@@ -447,12 +467,12 @@ class _calorieCounterState extends State<calorieCounter> {
 class FoodTrackList extends StatelessWidget {
   final DateTime datePicked;
 
-  FoodTrackList({required this.datePicked});
+  const FoodTrackList({super.key, required this.datePicked});
 
   @override
   Widget build(BuildContext context) {
     final DateTime curDate =
-        new DateTime(datePicked.year, datePicked.month, datePicked.day);
+        DateTime(datePicked.year, datePicked.month, datePicked.day);
 
     final foodTracks = Provider.of<List<foodTask>>(context);
 
@@ -472,14 +492,14 @@ class FoodTrackList extends StatelessWidget {
 
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       itemCount: curScans.length + 1,
       itemBuilder: (context, index) {
         if (index < curScans.length) {
           return FoodTrackTile(foodTrackEntry: curScans[index]);
         } else {
-          return SizedBox(height: 5);
+          return const SizedBox(height: 5);
         }
       },
     );
@@ -487,27 +507,27 @@ class FoodTrackList extends StatelessWidget {
 }
 
 class FoodTrackTile extends StatelessWidget {
-  foodTask foodTrackEntry;
-  DatabaseService databaseService = DatabaseService(
+  final foodTask foodTrackEntry;
+  final DatabaseService databaseService = DatabaseService(
     uid: "fithub-5df39",
     currentDate: DateTime.now(),
   );
 
-  FoodTrackTile({required this.foodTrackEntry});
+  FoodTrackTile({super.key, required this.foodTrackEntry});
 
-  List macros = caloriesStats.macroData;
+  final List macros = caloriesStats.macroData;
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
       leading: CircleAvatar(
         radius: 25.0,
-        backgroundColor: Color(0xff5FA55A),
+        backgroundColor: const Color(0xff5FA55A),
         child: _itemCalories(),
       ),
       title: Text(
         foodTrackEntry.foodName,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16.0,
           fontFamily: 'Open Sans',
           fontWeight: FontWeight.w500,
@@ -526,13 +546,13 @@ class FoodTrackTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(foodTrackEntry.calories.toStringAsFixed(0),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.white,
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w500,
             )),
-        Text('kcal',
+        const Text('kcal',
             style: TextStyle(
               fontSize: 10.0,
               color: Colors.white,
@@ -546,7 +566,7 @@ class FoodTrackTile extends StatelessWidget {
   Widget _macroData() {
     return Row(
       children: <Widget>[
-        Container(
+        SizedBox(
           width: 200,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -556,13 +576,13 @@ class FoodTrackTile extends StatelessWidget {
                   Container(
                     height: 8,
                     width: 8,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(carbsColour),
                       shape: BoxShape.circle,
                     ),
                   ),
-                  Text(' ' + foodTrackEntry.carbs.toStringAsFixed(1) + 'g    ',
-                      style: TextStyle(
+                  Text(' ${foodTrackEntry.carbs.toStringAsFixed(1)}g    ',
+                      style: const TextStyle(
                         fontSize: 12.0,
                         color: Colors.white,
                         fontFamily: 'Open Sans',
@@ -571,14 +591,13 @@ class FoodTrackTile extends StatelessWidget {
                   Container(
                     height: 8,
                     width: 8,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(proteinColour),
                       shape: BoxShape.circle,
                     ),
                   ),
-                  Text(
-                      ' ' + foodTrackEntry.protein.toStringAsFixed(1) + 'g    ',
-                      style: TextStyle(
+                  Text(' ${foodTrackEntry.protein.toStringAsFixed(1)}g    ',
+                      style: const TextStyle(
                         fontSize: 12.0,
                         color: Colors.white,
                         fontFamily: 'Open Sans',
@@ -587,13 +606,13 @@ class FoodTrackTile extends StatelessWidget {
                   Container(
                     height: 8,
                     width: 8,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(fatsColour),
                       shape: BoxShape.circle,
                     ),
                   ),
-                  Text(' ' + foodTrackEntry.fat.toStringAsFixed(1) + 'g',
-                      style: TextStyle(
+                  Text(' ${foodTrackEntry.fat.toStringAsFixed(1)}g',
+                      style: const TextStyle(
                         fontSize: 12.0,
                         color: Colors.white,
                         fontFamily: 'Open Sans',
@@ -601,8 +620,8 @@ class FoodTrackTile extends StatelessWidget {
                       )),
                 ],
               ),
-              Text(foodTrackEntry.grams.toString() + 'g',
-                  style: TextStyle(
+              Text('${foodTrackEntry.grams}g',
+                  style: const TextStyle(
                     fontSize: 12.0,
                     color: Colors.white,
                     fontFamily: 'Open Sans',
@@ -617,7 +636,7 @@ class FoodTrackTile extends StatelessWidget {
 
   Widget _expandedView(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20.0, 0.0, 15.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 15.0, 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -635,7 +654,7 @@ class FoodTrackTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('% of total',
+        const Text('% of total',
             style: TextStyle(
               fontSize: 14.0,
               color: Colors.white,
@@ -643,7 +662,7 @@ class FoodTrackTile extends StatelessWidget {
               fontWeight: FontWeight.w400,
             )),
         IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             iconSize: 16,
             onPressed: () async {
               print("Delete button pressed");
@@ -659,19 +678,20 @@ class FoodTrackTile extends StatelessWidget {
       caloriesValue = foodTrackEntry.calories / macros[0];
     }
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
       child: Row(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 10.0,
             width: 200.0,
             child: LinearProgressIndicator(
               value: caloriesValue,
-              backgroundColor: Color(0xffEDEDED),
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff5FA55A)),
+              backgroundColor: const Color(0xffEDEDED),
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(Color(0xff5FA55A)),
             ),
           ),
-          Text('      ' + ((caloriesValue) * 100).toStringAsFixed(0) + '%'),
+          Text('      ${((caloriesValue) * 100).toStringAsFixed(0)}%'),
         ],
       ),
     );
@@ -683,19 +703,20 @@ class FoodTrackTile extends StatelessWidget {
       carbsValue = foodTrackEntry.carbs / macros[2];
     }
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: Row(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 10.0,
             width: 200.0,
             child: LinearProgressIndicator(
               value: carbsValue,
-              backgroundColor: Color(0xffEDEDED),
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFA5457)),
+              backgroundColor: const Color(0xffEDEDED),
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(Color(0xffFA5457)),
             ),
           ),
-          Text('      ' + ((carbsValue) * 100).toStringAsFixed(0) + '%'),
+          Text('      ${((carbsValue) * 100).toStringAsFixed(0)}%'),
         ],
       ),
     );
@@ -707,19 +728,20 @@ class FoodTrackTile extends StatelessWidget {
       proteinValue = foodTrackEntry.protein / macros[1];
     }
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
       child: Row(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 10.0,
             width: 200.0,
             child: LinearProgressIndicator(
               value: proteinValue,
-              backgroundColor: Color(0xffEDEDED),
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFA8925)),
+              backgroundColor: const Color(0xffEDEDED),
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(Color(0xffFA8925)),
             ),
           ),
-          Text('      ' + ((proteinValue) * 100).toStringAsFixed(0) + '%'),
+          Text('      ${((proteinValue) * 100).toStringAsFixed(0)}%'),
         ],
       ),
     );
@@ -731,19 +753,20 @@ class FoodTrackTile extends StatelessWidget {
       fatValue = foodTrackEntry.fat / macros[3];
     }
     return Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 10.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 10.0),
       child: Row(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 10.0,
             width: 200.0,
             child: LinearProgressIndicator(
               value: (foodTrackEntry.fat / macros[3]),
-              backgroundColor: Color(0xffEDEDED),
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff01B4BC)),
+              backgroundColor: const Color(0xffEDEDED),
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(Color(0xff01B4BC)),
             ),
           ),
-          Text('      ' + ((fatValue) * 100).toStringAsFixed(0) + '%'),
+          Text('      ${((fatValue) * 100).toStringAsFixed(0)}%'),
         ],
       ),
     );

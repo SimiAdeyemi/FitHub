@@ -8,14 +8,15 @@ class DatabaseService {
   DatabaseService({required this.uid, required this.currentDate});
 
   final DateTime today =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   final DateTime weekStart = DateTime(2023, 04, 09);
 
   // collection reference
   final CollectionReference foodTrackCollection =
-      FirebaseFirestore.instance.collection('foodTracks');
+  FirebaseFirestore.instance.collection('foodTracks');
 
   Future addFoodTrackEntry(foodTask food) async {
+    print('Adding food entry: $food');
     return await foodTrackCollection
         .doc(food.createdOn.millisecondsSinceEpoch.toString())
         .set({
@@ -31,13 +32,16 @@ class DatabaseService {
   }
 
   Future deleteFoodTrackEntry(foodTask deleteEntry) async {
-    print(deleteEntry.toString());
+    print('Deleting food entry: $deleteEntry');
     return await foodTrackCollection
         .doc(deleteEntry.createdOn.millisecondsSinceEpoch.toString())
         .delete();
   }
 
   List<foodTask> _scanListFromSnapshot(QuerySnapshot snapshot) {
+    if (snapshot.docs.isEmpty) {
+      return [];
+    }
     return snapshot.docs.map((doc) {
       return foodTask(
         id: doc.id,
@@ -47,7 +51,7 @@ class DatabaseService {
         fat: doc['fat'] ?? 0,
         protein: doc['protein'] ?? 0,
         mealTime: doc['mealTime'] ?? "",
-        createdOn: doc['createdOn'].toDate() ?? DateTime.now(),
+        createdOn: doc['createdOn']?.toDate() ?? DateTime.now(),
         grams: doc['grams'] ?? 0,
       );
     }).toList();

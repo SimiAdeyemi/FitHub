@@ -7,15 +7,17 @@ import 'package:provider/provider.dart';
 class caloriesStats extends StatelessWidget {
   DateTime datePicked;
   DateTime today = DateTime.now();
-  caloriesStats({super.key, required this.datePicked});
   num totalCalories = 0;
   num totalCarbs = 0;
   num totalFat = 0;
   num totalProtein = 0;
   num displayCalories = 0;
+
+  caloriesStats({Key? key, required this.datePicked}) : super(key: key);
+
   bool dateCheck() {
     DateTime formatPicked =
-    DateTime(datePicked.year, datePicked.month, datePicked.day);
+        DateTime(datePicked.year, datePicked.month, datePicked.day);
     DateTime formatToday = DateTime(today.year, today.month, today.day);
     if (formatPicked.compareTo(formatToday) == 0) {
       return true;
@@ -23,11 +25,13 @@ class caloriesStats extends StatelessWidget {
       return false;
     }
   }
+
   static List<num> macroData = [];
+
   @override
   Widget build(BuildContext context) {
     final DateTime curDate =
-    new DateTime(datePicked.year, datePicked.month, datePicked.day);
+        DateTime(datePicked.year, datePicked.month, datePicked.day);
     final foodTracks = Provider.of<List<foodTask>>(context);
     List findCurScans(List<foodTask> foodTracks) {
       List currentFoodTracks = [];
@@ -40,6 +44,7 @@ class caloriesStats extends StatelessWidget {
       }
       return currentFoodTracks;
     }
+
     List currentFoodTracks = findCurScans(foodTracks);
     void findNutriments(List foodTracks) {
       for (var scan in foodTracks) {
@@ -50,6 +55,7 @@ class caloriesStats extends StatelessWidget {
       }
       totalCalories = 9 * totalFat + 4 * totalCarbs + 4 * totalProtein;
     }
+
     findNutriments(currentFoodTracks);
 // ignore: deprecated_member_use
     List<PieChartSectionData> sections = <PieChartSectionData>[];
@@ -57,7 +63,7 @@ class caloriesStats extends StatelessWidget {
       color: const Color(fatsColour),
       value: (9 * (totalFat) / totalCalories) * 100,
       title:
-      '', // ((9 * totalFat / totalCalories) * 100).toStringAsFixed(0) + '%',
+          '', // ((9 * totalFat / totalCalories) * 100).toStringAsFixed(0) + '%',
       radius: 50,
       // titleStyle: TextStyle(color: Colors.white, fontSize: 24),
     );
@@ -65,15 +71,15 @@ class caloriesStats extends StatelessWidget {
       color: const Color(carbsColour),
       value: (4 * (totalCarbs) / totalCalories) * 100,
       title:
-      '', // ((4 * totalCarbs / totalCalories) * 100).toStringAsFixed(0) + '%',
+          '', // ((4 * totalCarbs / totalCalories) * 100).toStringAsFixed(0) + '%',
       radius: 50,
       // titleStyle: TextStyle(color: Colors.black, fontSize: 24),
     );
     PieChartSectionData protein = PieChartSectionData(
       color: const Color(proteinColour),
       value: (4 * (totalProtein) / totalCalories) * 100,
-      title:
-      '', // ((4 * totalProtein / totalCalories) * 100).toStringAsFixed(0) + '%',
+      title: '',
+      // ((4 * totalProtein / totalCalories) * 100).toStringAsFixed(0) + '%',
       radius: 50,
       // titleStyle: TextStyle(color: Colors.white, fontSize: 24),
     );
@@ -98,7 +104,7 @@ class caloriesStats extends StatelessWidget {
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
                     )),
-                Text(macroData[2].toStringAsFixed(1) + 'g',
+                Text('${macroData[2].toStringAsFixed(1)}g',
                     style: const TextStyle(
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontFamily: 'Open Sans',
@@ -117,7 +123,7 @@ class caloriesStats extends StatelessWidget {
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
                     )),
-                Text(macroData[1].toStringAsFixed(1) + 'g',
+                Text('${macroData[1].toStringAsFixed(1)}g',
                     style: const TextStyle(
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontFamily: 'Open Sans',
@@ -136,7 +142,7 @@ class caloriesStats extends StatelessWidget {
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
                     )),
-                Text(macroData[3].toStringAsFixed(1) + 'g',
+                Text('${macroData[3].toStringAsFixed(1)}g',
                     style: const TextStyle(
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontFamily: 'Open Sans',
@@ -149,6 +155,7 @@ class caloriesStats extends StatelessWidget {
         ),
       );
     }
+
     Widget _calorieDisplay() {
       return Container(
         height: 74,
@@ -179,6 +186,7 @@ class caloriesStats extends StatelessWidget {
         ),
       );
     }
+
     if (currentFoodTracks.isEmpty) {
       if (dateCheck()) {
         return const Flexible(
@@ -186,7 +194,7 @@ class caloriesStats extends StatelessWidget {
           child: Text('Add food to see calorie breakdown.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 40.0,
+                fontSize: 27.5,
                 fontWeight: FontWeight.w500,
               )),
         );
@@ -196,32 +204,30 @@ class caloriesStats extends StatelessWidget {
           child: Text('No food added on this day.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 40.0,
+                fontSize: 27.5,
                 fontWeight: FontWeight.w500,
               )),
         );
       }
     } else {
-      return Container(
-        child: Row(
-          children: <Widget>[
-            Stack(alignment: Alignment.center, children: <Widget>[
-              AspectRatio(
-                aspectRatio: 1,
-                child: PieChart(
-                  PieChartData(
-                    sections: sections,
-                    borderData: FlBorderData(show: false),
-                    centerSpaceRadius: 40,
-                    sectionsSpace: 3,
-                  ),
+      return Row(
+        children: <Widget>[
+          Stack(alignment: Alignment.center, children: <Widget>[
+            AspectRatio(
+              aspectRatio: 1,
+              child: PieChart(
+                PieChartData(
+                  sections: sections,
+                  borderData: FlBorderData(show: false),
+                  centerSpaceRadius: 40,
+                  sectionsSpace: 3,
                 ),
               ),
-              _calorieDisplay(),
-            ]),
-            _chartLabels(),
-          ],
-        ),
+            ),
+            _calorieDisplay(),
+          ]),
+          _chartLabels(),
+        ],
       );
     }
   }

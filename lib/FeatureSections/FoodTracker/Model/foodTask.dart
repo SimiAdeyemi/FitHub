@@ -62,7 +62,6 @@ class foodTask {
 
   factory foodTask.fromJson(Map<String, dynamic> json) {
     return foodTask(
-      id: json['id'],
       foodName: json['foodName'],
       calories: json['calories'],
       carbs: json['carbs'],
