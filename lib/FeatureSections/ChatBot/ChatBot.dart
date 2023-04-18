@@ -189,9 +189,11 @@ class _HomeState extends State<Home> {
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
-                      // Remove the conversation from Firebase
-                      _deleteConversationFromFirebase(conversationList[index]['id']);
-
+                      // Add null check before removing a conversation
+                      String? conversationId = conversationList[index]['id'];
+                      if (conversationId != null) {
+                        _deleteConversationFromFirebase(conversationId);
+                      }
                       setState(() {
                         conversationList.removeAt(index);
                       });
@@ -213,6 +215,7 @@ class _HomeState extends State<Home> {
       },
     );
   }
+
   //method that will remove conversatoin from databae
   void _deleteConversationFromFirebase(String conversationId) {
     String userId = _auth.currentUser!.uid;
