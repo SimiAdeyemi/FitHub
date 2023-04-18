@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'FeatureSections/ChatBot/ChatBot.dart';
-import 'FeatureSections/FoodTracker/FoodTracker.dart';
+import 'FeatureSections/FoodTracker/Screens/FoodTracker.dart';
 import 'FeatureSections/More.dart';
 import 'FeatureSections/SocialMedia.dart';
 
@@ -79,9 +79,9 @@ class _HomePageState extends State<HomePage> {
 
   Route _createMorePageRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => More(),
+      pageBuilder: (context, animation, secondaryAnimation) => const More(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(1.0, 0.0);
+        var begin = const Offset(1.0, 0.0);
         var end = Offset.zero;
         var curve = Curves.ease;
 

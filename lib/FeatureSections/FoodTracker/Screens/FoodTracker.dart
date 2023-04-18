@@ -19,9 +19,9 @@ class _FoodTrackerState extends State<FoodTracker> {
   bool _showBmi = false;
   bool _useMetricUnits = true;
   double _inches = 0;
-  bool isVisible = true; //will be visible for the first frame
+  bool isVisible = true; // will be visible for the first frame
 
-  // do not make final variables
+  // do not make these variables into final variables
   TextEditingController _heightController = TextEditingController();
   TextEditingController _weightController = TextEditingController();
   TextEditingController _poundWeightController = TextEditingController();
@@ -33,6 +33,19 @@ class _FoodTrackerState extends State<FoodTracker> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const calorieCounter()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+            ),
+            child: const Text('Skip BMI Calculation'),
+          ),
+          const SizedBox(height: 16),
           const Text(
             'Please select your gender:',
             textAlign: TextAlign.center,
