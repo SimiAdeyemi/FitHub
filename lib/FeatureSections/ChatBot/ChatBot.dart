@@ -16,12 +16,11 @@ class ChatBot extends StatelessWidget {
     return MaterialApp(
       title: 'FitBot',
       theme: ThemeData(brightness: Brightness.dark),
-      home: const Home(),
+      home: Home(),
       debugShowCheckedModeBanner: false, // Add this line
     );
   }
 }
-
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -50,6 +49,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white10,
       body: SafeArea(
         child: Stack(
           children: [
@@ -62,14 +62,14 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   color: Colors.green,
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: _controller,
-                          style: const TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                           decoration: InputDecoration(
                             hintText: 'Ask about workouts, meal plans or injuries.',
                             hintStyle: TextStyle(
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
                           sendMessage(_controller.text);
                           _controller.clear();
                         },
-                        icon: const Icon(Icons.send),
+                        icon: Icon(Icons.send),
                       ),
                     ],
                   ),
@@ -96,22 +96,24 @@ class _HomeState extends State<Home> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(width: 48), // This is a placeholder to balance the row
+                    SizedBox(width: 48), // This is a placeholder to balance the row
                     IconButton(
                       onPressed: () {
                         _createNewConversation();
                       },
-                      icon: const Icon(Icons.add),
+                      icon: Icon(Icons.add),
+                      color: Colors.green,
                       tooltip: 'New Conversation',
                     ),
                     IconButton(
                       onPressed: () {
                         _showHistory(context);
                       },
-                      icon: const Icon(Icons.more_horiz),
+                      icon: Icon(Icons.more_horiz),
+                      color: Colors.green,
                       tooltip: 'Conversation History',
                     ),
-                    const SizedBox(width: 48), // This is a placeholder to balance the row
+                    SizedBox(width: 48), // This is a placeholder to balance the row
                   ],
                 ),
               ),
@@ -174,8 +176,8 @@ class _HomeState extends State<Home> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Conversations'),
-          content: SizedBox(
+          title: Text('Conversations'),
+          content: Container(
             width: double.maxFinite,
             child: ListView.builder(
               itemCount: conversationList.length,
@@ -187,7 +189,7 @@ class _HomeState extends State<Home> {
                     _displayConversation(context, index);
                   },
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: Icon(Icons.delete),
                     onPressed: () {
                       // Add null check before removing a conversation
                       String? conversationId = conversationList[index]['id'];
@@ -208,7 +210,7 @@ class _HomeState extends State<Home> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text('Close'),
             ),
           ],
         );
@@ -227,15 +229,13 @@ class _HomeState extends State<Home> {
         .delete();
   }
 
-
-
   void _displayConversation(BuildContext context, int conversationIndex) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(conversationList[conversationIndex]['title']),
-          content: SizedBox(
+          content: Container(
             width: double.maxFinite,
             child: ListView.builder(
               itemCount: conversationList[conversationIndex]['messages'].length,
@@ -250,12 +250,12 @@ class _HomeState extends State<Home> {
                       : MainAxisAlignment.start,
                   children: [
                     if (!isUserMessage) ...[
-                      const Icon(Icons.chat_bubble_outline, color: Colors.grey),
-                      const SizedBox(width: 8),
+                      Icon(Icons.chat_bubble_outline, color: Colors.grey),
+                      SizedBox(width: 8),
                     ],
                     Flexible(
                       child: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: isUserMessage ? Colors.blue : Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),
@@ -269,8 +269,8 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     if (isUserMessage) ...[
-                      const SizedBox(width: 8),
-                      const Icon(Icons.person, color: Colors.grey),
+                      SizedBox(width: 8),
+                      Icon(Icons.person, color: Colors.grey),
                     ],
                   ],
                 );
@@ -280,7 +280,7 @@ class _HomeState extends State<Home> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text('Close'),
             ),
           ],
         );
