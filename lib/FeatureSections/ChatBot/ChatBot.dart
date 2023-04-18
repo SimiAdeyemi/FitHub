@@ -1,6 +1,10 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'Messages.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 //void main() => runApp(ChatBot()); //- For Testing, to be deleted
 
@@ -18,7 +22,6 @@ class ChatBot extends StatelessWidget {
   }
 }
 
-
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -27,6 +30,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  int _totalConversations = 0; // variable to store number of conversations
   List<Map<String, dynamic>> conversationList = [];
   late DialogFlowtter dialogFlowtter;
   final TextEditingController _controller = TextEditingController();
@@ -36,7 +42,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
-    _createNewConversation(); // an empty conversation when the app starts
+    _fetchConversations(); // fetch conversations from Cloud Firestore
     super.initState();
   }
 
@@ -44,6 +50,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white10,
       body: SafeArea(
         child: Stack(
           children: [
@@ -96,6 +103,7 @@ class _HomeState extends State<Home> {
                         _createNewConversation();
                       },
                       icon: Icon(Icons.add),
+                      color: Colors.green,
                       tooltip: 'New Conversation',
                     ),
                     IconButton(
@@ -103,6 +111,7 @@ class _HomeState extends State<Home> {
                         _showHistory(context);
                       },
                       icon: Icon(Icons.more_horiz),
+                      color: Colors.green,
                       tooltip: 'Conversation History',
                     ),
                     SizedBox(width: 48), // This is a placeholder to balance the row
@@ -116,6 +125,17 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+  //save conversation to Firebase
+  void _saveConversation(int conversationIndex) {
+    String userId = _auth.currentUser!.uid;
+    _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('conversations')
+        .doc(conversationIndex.toString())
+        .set(conversationList[conversationIndex]);
+  }
+
 
   sendMessage(String text) async {
     if (text.isEmpty) {
@@ -143,6 +163,8 @@ class _HomeState extends State<Home> {
           'text': response.message!.text!.text!.first,
           'isUserMessage': false,
         });
+        // Save the conversation to Firebase Realtime Database
+        _saveConversation(currentConversationIndex);
       });
     }
   }
@@ -170,6 +192,11 @@ class _HomeState extends State<Home> {
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
+                      // Add null check before removing a conversation
+                      String? conversationId = conversationList[index]['id'];
+                      if (conversationId != null) {
+                        _deleteConversationFromFirebase(conversationId);
+                      }
                       setState(() {
                         conversationList.removeAt(index);
                       });
@@ -192,6 +219,16 @@ class _HomeState extends State<Home> {
     );
   }
 
+  //method that will remove conversatoin from databae
+  void _deleteConversationFromFirebase(String conversationId) {
+    String userId = _auth.currentUser!.uid;
+    _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('conversations')
+        .doc(conversationId)
+        .delete();
+  }
 
   void _displayConversation(BuildContext context, int conversationIndex) {
     showDialog(
@@ -252,11 +289,40 @@ class _HomeState extends State<Home> {
     );
   }
   void _createNewConversation() {
+    int newConversationIndex = _totalConversations; // Update this line
+    Map<String, dynamic> newConversation = {
+      'title': 'Conversation ${newConversationIndex + 1}',
+      'messages': [],
+    };
+
     setState(() {
       messages.clear();
-      conversationList.add({
-        'title': 'Conversation ${conversationList.length + 1}',
-        'messages': [],
+      conversationList.add(newConversation);
+    });
+
+    // Save the new conversation to Cloud Firestore
+    _saveConversation(newConversationIndex);
+
+    _totalConversations++;
+  }
+
+
+  void _fetchConversations() {
+    String userId = _auth.currentUser!.uid;
+    _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('conversations')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      List<Map<String, dynamic>> fetchedConversations = [];
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> conversationData = doc.data() as Map<String, dynamic>;
+        conversationData['id'] = doc.id; // Add the document ID to the conversation data
+        fetchedConversations.add(conversationData);
+      });
+      setState(() {
+        conversationList = fetchedConversations;
       });
     });
   }
