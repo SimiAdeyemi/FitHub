@@ -43,7 +43,7 @@ class _FoodTrackerState extends State<FoodTracker> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
             ),
-            child: const Text('Skip BMI'),
+            child: const Text('Skip BMI Calculation'),
           ),
           const SizedBox(height: 16),
           const Text(

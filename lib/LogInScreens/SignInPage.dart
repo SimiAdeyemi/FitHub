@@ -94,7 +94,7 @@ class _SignInPageState extends State<SignInPage> {
 
                     displayName = userQuery.docs.first['displayName'];
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(initialIndex: 1,)));
                   }
                 }),
                 signUpOption()
@@ -144,5 +144,4 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
-
 }

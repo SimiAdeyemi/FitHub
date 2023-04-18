@@ -105,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               password: _passwordTextController.text);
                             userSetup(_userNameTextController.text);
                             displayName = _userNameTextController.text;
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(initialIndex: 1,)));
                          }}
                       )
                     ],
