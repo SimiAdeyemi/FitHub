@@ -22,7 +22,6 @@ class ChatBot extends StatelessWidget {
   }
 }
 
-
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -50,6 +49,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white10,
       body: SafeArea(
         child: Stack(
           children: [
@@ -102,6 +102,7 @@ class _HomeState extends State<Home> {
                         _createNewConversation();
                       },
                       icon: Icon(Icons.add),
+                      color: Colors.green,
                       tooltip: 'New Conversation',
                     ),
                     IconButton(
@@ -109,6 +110,7 @@ class _HomeState extends State<Home> {
                         _showHistory(context);
                       },
                       icon: Icon(Icons.more_horiz),
+                      color: Colors.green,
                       tooltip: 'Conversation History',
                     ),
                     SizedBox(width: 48), // This is a placeholder to balance the row
@@ -226,8 +228,6 @@ class _HomeState extends State<Home> {
         .doc(conversationId)
         .delete();
   }
-
-
 
   void _displayConversation(BuildContext context, int conversationIndex) {
     showDialog(
