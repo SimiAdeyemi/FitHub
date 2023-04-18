@@ -47,6 +47,25 @@ class _SignInPageState extends State<SignInPage> {
                     border: OutlineInputBorder(), // Adding a border to the email field.
                     contentPadding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0), // Adding padding to the content of the email field.
                   ),
+                  validator: (value) { // Adding a validator to the email field.
+                    if (value == null || value.isEmpty) { // Checking if the email field is empty.
+                      return 'Please enter your email.'; // Returning an error message if the email field is empty.
+                    } else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) { // Validating the format of the email.
+                      return 'Please enter a valid email address.'; // Returning an error message if the email format is invalid.
+                    }
+                    return null; // Returning null if the email is valid.
+                  },
+                ),
+                const SizedBox(height: 12), // Adding a SizedBox for spacing.
+                TextFormField( // Creating a TextFormField for the password field.
+                  controller: _passwordTextController, // Setting the TextEditingController for the password field.
+                  decoration: const InputDecoration( // Adding decoration to the password field.
+                    labelText: "Password", // Adding a label for the password field.
+                    prefixIcon: Icon(Icons.lock_outline), // Adding an icon for the password field.
+                    border: OutlineInputBorder(), // Adding a border to the password field.
+                    contentPadding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 16.0), // Adding padding to the content of the password field.
+                  ),
+                  obscureText: true, // Hiding the password text.
                   validator: (value) { // Adding a validator to the password field.
                     if (value == null || value.isEmpty) { // Checking if the password field is empty.
                       return 'Please enter your password.'; // Returning an error message if the password field is empty.
