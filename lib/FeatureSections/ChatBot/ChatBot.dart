@@ -32,6 +32,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  int _totalConversations = 0; // variable to store number of conversations
   List<Map<String, dynamic>> conversationList = [];
   late DialogFlowtter dialogFlowtter;
   final TextEditingController _controller = TextEditingController();
@@ -288,7 +289,7 @@ class _HomeState extends State<Home> {
     );
   }
   void _createNewConversation() {
-    int newConversationIndex = conversationList.length;
+    int newConversationIndex = _totalConversations; // Update this line
     Map<String, dynamic> newConversation = {
       'title': 'Conversation ${newConversationIndex + 1}',
       'messages': [],
@@ -301,6 +302,8 @@ class _HomeState extends State<Home> {
 
     // Save the new conversation to Cloud Firestore
     _saveConversation(newConversationIndex);
+
+    _totalConversations++;
   }
 
 
