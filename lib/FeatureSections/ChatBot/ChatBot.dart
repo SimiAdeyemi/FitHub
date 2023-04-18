@@ -1,6 +1,10 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'Messages.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 //void main() => runApp(ChatBot()); //- For Testing, to be deleted
 
@@ -27,6 +31,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   List<Map<String, dynamic>> conversationList = [];
   late DialogFlowtter dialogFlowtter;
   final TextEditingController _controller = TextEditingController();
@@ -36,7 +42,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
-    _createNewConversation(); // an empty conversation when the app starts
+    _fetchConversations(); // fetch conversations from Cloud Firestore
     super.initState();
   }
 
@@ -116,6 +122,17 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+  //save conversation to Firebase
+  void _saveConversation(int conversationIndex) {
+    String userId = _auth.currentUser!.uid;
+    _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('conversations')
+        .doc(conversationIndex.toString())
+        .set(conversationList[conversationIndex]);
+  }
+
 
   sendMessage(String text) async {
     if (text.isEmpty) {
@@ -143,6 +160,8 @@ class _HomeState extends State<Home> {
           'text': response.message!.text!.text!.first,
           'isUserMessage': false,
         });
+        // Save the conversation to Firebase Realtime Database
+        _saveConversation(currentConversationIndex);
       });
     }
   }
@@ -170,6 +189,9 @@ class _HomeState extends State<Home> {
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
+                      // Remove the conversation from Firebase
+                      _deleteConversationFromFirebase(conversationList[index]['id']);
+
                       setState(() {
                         conversationList.removeAt(index);
                       });
@@ -191,6 +213,17 @@ class _HomeState extends State<Home> {
       },
     );
   }
+  //method that will remove conversatoin from databae
+  void _deleteConversationFromFirebase(String conversationId) {
+    String userId = _auth.currentUser!.uid;
+    _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('conversations')
+        .doc(conversationId)
+        .delete();
+  }
+
 
 
   void _displayConversation(BuildContext context, int conversationIndex) {
@@ -252,11 +285,38 @@ class _HomeState extends State<Home> {
     );
   }
   void _createNewConversation() {
+    int newConversationIndex = conversationList.length;
+    Map<String, dynamic> newConversation = {
+      'title': 'Conversation ${newConversationIndex + 1}',
+      'messages': [],
+    };
+
     setState(() {
       messages.clear();
-      conversationList.add({
-        'title': 'Conversation ${conversationList.length + 1}',
-        'messages': [],
+      conversationList.add(newConversation);
+    });
+
+    // Save the new conversation to Cloud Firestore
+    _saveConversation(newConversationIndex);
+  }
+
+
+  void _fetchConversations() {
+    String userId = _auth.currentUser!.uid;
+    _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('conversations')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      List<Map<String, dynamic>> fetchedConversations = [];
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> conversationData = doc.data() as Map<String, dynamic>;
+        conversationData['id'] = doc.id; // Add the document ID to the conversation data
+        fetchedConversations.add(conversationData);
+      });
+      setState(() {
+        conversationList = fetchedConversations;
       });
     });
   }
