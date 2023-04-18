@@ -35,6 +35,8 @@ dependencies:
   firebase_auth: ^4.3.0
   image_picker: ^0.8.7+2
   path_provider: ^2.0.14
+  cloud_firestore: ^4.5.2 
+  dialog_flowtter: ^0.3.3
 
 
 dev_dependencies:
