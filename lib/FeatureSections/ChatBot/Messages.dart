@@ -1,4 +1,4 @@
-import 'package:dialog_flowtter/dialog_flowtter.dart';
+// import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -19,18 +19,18 @@ class _MessagesScreenState extends State<MessagesScreen> {
         final Map<String, dynamic> message = widget.messages[index];
 
         return Container(
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           child: Row(
             mainAxisAlignment: message['isUserMessage']
                 ? MainAxisAlignment.end
                 : MainAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+                    bottomLeft: const Radius.circular(20),
+                    topRight: const Radius.circular(20),
                     bottomRight: Radius.circular(
                         message['isUserMessage'] ? 0 : 20),
                     topLeft: Radius.circular(
@@ -43,14 +43,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 constraints: BoxConstraints(maxWidth: w * 2 / 3),
                 child: Text(
                   message['message'].text.text[0],
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ),
             ],
           ),
         );
       },
-      separatorBuilder: (_, i) => Padding(padding: EdgeInsets.only(top: 10)),
+      separatorBuilder: (_, i) => const Padding(padding: EdgeInsets.only(top: 10)),
       itemCount: widget.messages.length,
     );
   }

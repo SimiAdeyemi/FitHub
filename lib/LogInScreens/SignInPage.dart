@@ -114,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
             style: TextStyle(color: Colors.black54)),
         GestureDetector( // Adding a GestureDetector to enable user interaction.
           onTap: () { // Creating a callback function for the gesture.
-            Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage())); // Navigating to the SignUpPage when the user taps on the "Sign Up" option.
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpPage())); // Navigating to the SignUpPage when the user taps on the "Sign Up" option.
           },
           child: const Text( // Displaying text for the "Sign Up" option.
             " Sign Up",
@@ -139,7 +139,7 @@ class _SignInPageState extends State<SignInPage> {
             textAlign: TextAlign.right, // Aligning the text to the right.
           ),
           onPressed: () => Navigator.push(context, // Navigating to the ResetPassword page when the user taps on the "Forgot Password?" option.
-              MaterialPageRoute(builder: (context) => ResetPassword()))
+              MaterialPageRoute(builder: (context) => const ResetPassword()))
       ),
     );
   }

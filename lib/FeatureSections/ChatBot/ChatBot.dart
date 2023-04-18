@@ -12,7 +12,7 @@ class ChatBot extends StatelessWidget {
     return MaterialApp(
       title: 'FitBot',
       theme: ThemeData(brightness: Brightness.dark),
-      home: Home(),
+      home: const Home(),
       debugShowCheckedModeBanner: false, // Add this line
     );
   }
@@ -56,14 +56,14 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   color: Colors.green,
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: _controller,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: const TextStyle(color: Colors.white, fontSize: 20),
                           decoration: InputDecoration(
                             hintText: 'Ask about workouts, meal plans or injuries.',
                             hintStyle: TextStyle(
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
                           sendMessage(_controller.text);
                           _controller.clear();
                         },
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                       ),
                     ],
                   ),
@@ -90,22 +90,22 @@ class _HomeState extends State<Home> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(width: 48), // This is a placeholder to balance the row
+                    const SizedBox(width: 48), // This is a placeholder to balance the row
                     IconButton(
                       onPressed: () {
                         _createNewConversation();
                       },
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                       tooltip: 'New Conversation',
                     ),
                     IconButton(
                       onPressed: () {
                         _showHistory(context);
                       },
-                      icon: Icon(Icons.more_horiz),
+                      icon: const Icon(Icons.more_horiz),
                       tooltip: 'Conversation History',
                     ),
-                    SizedBox(width: 48), // This is a placeholder to balance the row
+                    const SizedBox(width: 48), // This is a placeholder to balance the row
                   ],
                 ),
               ),
@@ -155,8 +155,8 @@ class _HomeState extends State<Home> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Conversations'),
-          content: Container(
+          title: const Text('Conversations'),
+          content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
               itemCount: conversationList.length,
@@ -168,7 +168,7 @@ class _HomeState extends State<Home> {
                     _displayConversation(context, index);
                   },
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () {
                       setState(() {
                         conversationList.removeAt(index);
@@ -184,7 +184,7 @@ class _HomeState extends State<Home> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );
@@ -199,7 +199,7 @@ class _HomeState extends State<Home> {
       builder: (context) {
         return AlertDialog(
           title: Text(conversationList[conversationIndex]['title']),
-          content: Container(
+          content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
               itemCount: conversationList[conversationIndex]['messages'].length,
@@ -214,12 +214,12 @@ class _HomeState extends State<Home> {
                       : MainAxisAlignment.start,
                   children: [
                     if (!isUserMessage) ...[
-                      Icon(Icons.chat_bubble_outline, color: Colors.grey),
-                      SizedBox(width: 8),
+                      const Icon(Icons.chat_bubble_outline, color: Colors.grey),
+                      const SizedBox(width: 8),
                     ],
                     Flexible(
                       child: Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: isUserMessage ? Colors.blue : Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),
@@ -233,8 +233,8 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     if (isUserMessage) ...[
-                      SizedBox(width: 8),
-                      Icon(Icons.person, color: Colors.grey),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.person, color: Colors.grey),
                     ],
                   ],
                 );
@@ -244,7 +244,7 @@ class _HomeState extends State<Home> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );
