@@ -100,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       const SizedBox(height: 20),
                       firebaseButton(context, "Sign Up", () async {
                          if (_formKey.currentState!.validate()) {
-                            UserCredential user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            await FirebaseAuth.instance.createUserWithEmailAndPassword(
                               email: _emailTextController.text,
                               password: _passwordTextController.text);
                             userSetup(_userNameTextController.text);
