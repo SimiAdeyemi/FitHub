@@ -85,10 +85,34 @@ class caloriesStats extends StatelessWidget {
     );
     sections = [fat, protein, carbohydrates];
     macroData = [displayCalories, totalProtein, totalCarbs, totalFat];
+
+    if (totalCarbs == 0 || totalFat == 0 || totalProtein == 0) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const Text(
+              'It seems like you are missing some macronutrients in your diet!',
+              style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.w500,
+              )),
+          const SizedBox(height: 20),
+          if (totalCarbs == 0)
+            const Text('You are missing carbohydrates in your diet.'),
+          if (totalFat == 0)
+            const Text('You are missing some fat in your diet.'),
+          if (totalProtein == 0)
+            const Text('You are missing protein in your diet.'),
+        ],
+      );
+    }
+
     totalCarbs = 0;
     totalFat = 0;
     totalProtein = 0;
     displayCalories = 0;
+
     Widget _chartLabels() {
       return Padding(
         padding: const EdgeInsets.only(top: 78.0),
