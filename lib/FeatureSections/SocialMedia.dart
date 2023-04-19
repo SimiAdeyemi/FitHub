@@ -24,6 +24,14 @@ class SocialMedia extends StatefulWidget {
 class _SocialMediaState extends State<SocialMedia> {
   File? file;
 
+  Future<void> uploadImage(File file) async {
+    // Generate a unique path using the current time in milliseconds
+    final path = 'posts/${DateTime.now().millisecondsSinceEpoch}-my-image';
+
+    // Upload the file to Firebase Storage
+    final ref = FirebaseStorage.instance.ref().child(path);
+    await ref.putFile(file);
+  }
 
   takePhoto() async {
     XFile? post = await ImagePicker().pickImage(
@@ -34,13 +42,9 @@ class _SocialMediaState extends State<SocialMedia> {
     if (post != null) {
       setState(() {
         file = File(post.path);
-        debugPrint("jeru File path: ${file?.path}");//proves that the picture is being stored in file
-        const path = 'posts/my-image';
-        final ref = FirebaseStorage.instance.ref().child(path);
-        ref.putFile(file!);
-
+        debugPrint("jeru File path: ${file?.path}");
+        uploadImage(file!); // Upload the file to Firebase Storage
       });
-      //then we display picture send it to database then set file to null
     }
   }
 
@@ -52,11 +56,8 @@ class _SocialMediaState extends State<SocialMedia> {
     );
     if (post != null) {
       setState(() {
-        //uploading post to firebase
         file = File(post.path);
-        const path = 'posts/my-image';
-        final ref = FirebaseStorage.instance.ref().child(path);
-        ref.putFile(file!);
+        uploadImage(file!); // Upload the file to Firebase Storage
       });
     }
   }
