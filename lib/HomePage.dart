@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'FeatureSections/ChatBot/ChatBot.dart';
 import 'FeatureSections/FoodTracker/Screens/FoodTracker.dart';
 import 'FeatureSections/More.dart';
-import 'FeatureSections/SocialMedia.dart';
+import 'FeatureSections/SocialMedia/SocialMedia.dart';
 
 class HomePage extends StatefulWidget {
   final int initialIndex;

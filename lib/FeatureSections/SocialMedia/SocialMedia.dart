@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:group_project/globals.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:firebase_core/firebase_core.dart';
@@ -8,25 +9,20 @@ import 'package:firebase_storage/firebase_storage.dart';
 //1. uploads posts to data base
 //2. display all the posts
 
-
-
-
 class SocialMedia extends StatefulWidget {
   const SocialMedia({Key? key}) : super(key: key);
 
   @override
-  _SocialMediaState createState() => _SocialMediaState();
+  State<StatefulWidget> createState() => _SocialMediaState();
 }
-
-
-
 
 class _SocialMediaState extends State<SocialMedia> {
   File? file;
 
   Future<void> uploadImage(File file) async {
     // Generate a unique path using the current time in milliseconds
-    final path = 'posts/${DateTime.now().millisecondsSinceEpoch}-my-image';
+    final path =
+        'posts/${DateTime.now().millisecondsSinceEpoch}-$displayName-my-image';
 
     // Upload the file to Firebase Storage
     final ref = FirebaseStorage.instance.ref().child(path);
