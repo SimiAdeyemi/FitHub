@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
 //to do list
 //1. uploads posts to data base
@@ -23,6 +24,7 @@ class SocialMedia extends StatefulWidget {
 class _SocialMediaState extends State<SocialMedia> {
   File? file;
 
+
   takePhoto() async {
     XFile? post = await ImagePicker().pickImage(
       source: ImageSource.camera,
@@ -32,6 +34,11 @@ class _SocialMediaState extends State<SocialMedia> {
     if (post != null) {
       setState(() {
         file = File(post.path);
+        debugPrint("jeru File path: ${file?.path}");//proves that the picture is being stored in file
+        const path = 'posts/my-image.jpg';
+        final ref = FirebaseStorage.instance.ref().child(path);
+        ref.putFile(file!);
+
       });
       //then we display picture send it to database then set file to null
     }
@@ -45,7 +52,11 @@ class _SocialMediaState extends State<SocialMedia> {
     );
     if (post != null) {
       setState(() {
+        //uploading post to firebase
         file = File(post.path);
+        const path = 'posts/my-image.jpg';
+        final ref = FirebaseStorage.instance.ref().child(path);
+        ref.putFile(file!);
       });
     }
   }
