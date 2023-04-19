@@ -35,7 +35,7 @@ class _SocialMediaState extends State<SocialMedia> {
       setState(() {
         file = File(post.path);
         debugPrint("jeru File path: ${file?.path}");//proves that the picture is being stored in file
-        const path = 'posts/my-image.jpg';
+        const path = 'posts/my-image';
         final ref = FirebaseStorage.instance.ref().child(path);
         ref.putFile(file!);
 
@@ -54,7 +54,7 @@ class _SocialMediaState extends State<SocialMedia> {
       setState(() {
         //uploading post to firebase
         file = File(post.path);
-        const path = 'posts/my-image.jpg';
+        const path = 'posts/my-image';
         final ref = FirebaseStorage.instance.ref().child(path);
         ref.putFile(file!);
       });
