@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:group_project/globals.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
+
 
 class SocialMedia extends StatefulWidget {
   const SocialMedia({Key? key}) : super(key: key);
@@ -43,6 +45,9 @@ class _SocialMediaState extends State<SocialMedia> {
               final String imageUrl = posts[index].get('imageUrl');
               final String displayName = posts[index].get('displayName');
               final String title = posts[index].get('title');
+              final Timestamp timestamp = posts[index].get('timestamp');
+              final DateTime dateTime = timestamp.toDate();
+              final String date = DateFormat.yMd().add_jm().format(dateTime); // Shorthand date and time
 
               return Card(
                 child: Column(
@@ -51,7 +56,7 @@ class _SocialMediaState extends State<SocialMedia> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '$displayName - $title',
+                        '$displayName - $title                       $date',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
