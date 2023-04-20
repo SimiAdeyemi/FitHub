@@ -17,11 +17,10 @@ class _SocialMediaState extends State<SocialMedia> {
 
   @override
   Widget build(BuildContext context) {
-    //return file == null ? postFunction(context) : buildUploadForm();
     return postFunction(context);
   }
 
-  Future<void> uploadImage(File file) async {
+  Future<void> uploadImage(File file, String title) async {
     try {
       // Generate a unique path using the current time in milliseconds
       final path = 'images/${DateTime.now().millisecondsSinceEpoch}-$displayName-my-image';
@@ -39,6 +38,7 @@ class _SocialMediaState extends State<SocialMedia> {
       await FirebaseFirestore.instance.collection('Social Media Posts').add({
         'imageUrl': downloadUrl,
         'displayName': displayName,
+        'title': title,
       });
     } catch (e) {
       // Handle any errors that might occur
@@ -46,86 +46,60 @@ class _SocialMediaState extends State<SocialMedia> {
     }
   }
 
-  //createPostInFireStore(String postUrl) {}
-
-  takePhoto() async {
+  choosePhoto(bool fromGallery) async {
+    final titleController = TextEditingController(); // Create a controller for the title field
     XFile? post = await ImagePicker().pickImage(
-      source: ImageSource.camera,
+      source: fromGallery ? ImageSource.gallery : ImageSource.camera,
       maxHeight: 1080,
       maxWidth: 1080,
     );
     if (post != null) {
       setState(() {
         file = File(post.path);
-        debugPrint("jeru File path: ${file?.path}");
-        // Show a popup dialog with the selected image and "Post" and "Cancel" buttons
+        // Show a popup dialog with the selected image, a title field, and "Post" and "Cancel" buttons
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Preview Image'),
-              content: Container(
-                width: double.maxFinite,
-                child: Image.file(file!),
+            return SingleChildScrollView(
+              child: AlertDialog(
+                title: const Text('Preview Post'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 30,
+                      child: TextField(
+                        controller: titleController,
+                        decoration: const InputDecoration(
+                          labelText: 'Title',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      width: double.maxFinite,
+                      child: Image.file(file!),
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog box
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog box
+                      // Upload the file to Firebase Storage and save the download URL
+                      uploadImage(file!, titleController.text);
+                    },
+                    child: const Text('Post'),
+                  ),
+                ],
               ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the dialog box
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the dialog box
-                    // Upload the file to Firebase Storage and save the download URL
-                    uploadImage(file!);
-                  },
-                  child: const Text('Post'),
-                ),
-              ],
-            );
-          },
-        );
-      });
-    }
-  }
-
-  takeFromGallery() async {
-    XFile? post = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxHeight: 1080,
-      maxWidth: 1080,
-    );
-    if (post != null) {
-      setState(() {
-        file = File(post.path);
-        // Show a popup dialog with the selected image and "Post" and "Cancel" buttons
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Preview Image'),
-              content: Container(
-                width: double.maxFinite,
-                child: Image.file(file!),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the dialog box
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the dialog box
-                    // Upload the file to Firebase Storage and save the download URL
-                    uploadImage(file!);
-                  },
-                  child: const Text('Post'),
-                ),
-              ],
             );
           },
         );
@@ -148,14 +122,15 @@ class _SocialMediaState extends State<SocialMedia> {
                     SimpleDialogOption(
                       onPressed: () async {
                         Navigator.pop(context); // close the dialog box
-                        takePhoto();
+                        choosePhoto(false);
                       },
                       child: const Text('Camera'),
                     ),
                     SimpleDialogOption(
                       onPressed: () async {
                         Navigator.pop(context);
-                        takeFromGallery(); // close the dialog box
+                        //takeFromGallery(); // close the dialog box
+                        choosePhoto(true);
                       },
                       child: const Text('Camera Roll'),
                     ),
