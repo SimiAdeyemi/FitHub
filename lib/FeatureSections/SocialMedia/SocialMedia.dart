@@ -109,7 +109,7 @@ class _SocialMediaState extends State<SocialMedia> {
     );
   }
 
-  Future<void> uploadImage(File file, String title) async {
+  uploadImage(File file, String title) async {
     try {
       // Generate a unique path using the current time in milliseconds
       final path = 'images/${DateTime.now().millisecondsSinceEpoch}-$displayName-my-image';
