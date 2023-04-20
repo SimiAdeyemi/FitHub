@@ -109,6 +109,7 @@ class _SocialMediaState extends State<SocialMedia> {
     );
   }
 
+  //
   uploadImage(File file, String title) async {
     try {
       // Generate a unique path using the current time in milliseconds
