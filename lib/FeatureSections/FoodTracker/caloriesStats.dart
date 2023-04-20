@@ -86,6 +86,7 @@ class caloriesStats extends StatelessWidget {
     sections = [fat, protein, carbohydrates];
     macroData = [displayCalories, totalProtein, totalCarbs, totalFat];
 
+    //new method
     if (totalCarbs == 0 || totalFat == 0 || totalProtein == 0) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
