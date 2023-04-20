@@ -5,7 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
-//lines  to make code different for push
+//line to make code different for push
+
 //to do list
 //1. uploads posts to data base
 //2. display all the posts
@@ -22,18 +23,13 @@ class _SocialMediaState extends State<SocialMedia> {
 
   Future<void> uploadImage(File file) async {
     // Generate a unique path using the current time in milliseconds
-
     final path =
         'posts/${DateTime.now().millisecondsSinceEpoch}-$displayName-my-image';
 
     // Upload the file to Firebase Storage
-
     final ref = FirebaseStorage.instance.ref().child(path);
-
     await ref.putFile(file);
-
     String url = await ref.getDownloadURL();
-
     createPostInFireStore(url);
   }
 
@@ -45,14 +41,11 @@ class _SocialMediaState extends State<SocialMedia> {
       maxHeight: 1080,
       maxWidth: 1080,
     );
-
     if (post != null) {
       setState(() {
         file = File(post.path);
-
         debugPrint("jeru File path: ${file?.path}");
-
-        uploadImage(file!); // Upload the file to Firebase Storage
+        //uploadImage(file!); // Upload the file to Firebase Storage
       });
     }
   }
@@ -63,18 +56,15 @@ class _SocialMediaState extends State<SocialMedia> {
       maxHeight: 1080,
       maxWidth: 1080,
     );
-
     if (post != null) {
       setState(() {
         file = File(post.path);
-
-        uploadImage(file!); // Upload the file to Firebase Storage
+        // uploadImage(file!); // Upload the file to Firebase Storage
       });
     }
   }
 
   //https://stacksecrets.com/flutter/build-an-image-picker-wrapper-widget-in-flutter
-
   //https://stackoverflow.com/questions/49809351/how-to-create-a-circle-icon-button-in-flutter
 
   Scaffold postFunction(BuildContext context) {
@@ -92,7 +82,6 @@ class _SocialMediaState extends State<SocialMedia> {
                     SimpleDialogOption(
                       onPressed: () async {
                         Navigator.pop(context); // close the dialog box
-
                         takePhoto();
                       },
                       child: const Text('Camera'),
@@ -100,7 +89,6 @@ class _SocialMediaState extends State<SocialMedia> {
                     SimpleDialogOption(
                       onPressed: () async {
                         Navigator.pop(context);
-
                         takeFromGallery(); // close the dialog box
                       },
                       child: const Text('Camera Roll'),
@@ -145,24 +133,22 @@ class _SocialMediaState extends State<SocialMedia> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-
         centerTitle: true,
         // center the title
-
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: clearImage,
         ),
-
         title: const Text(
           "Upload Post",
           style: TextStyle(color: Colors.black),
         ),
-
         actions: [
           TextButton(
             onPressed: () {
-              // do something
+              if (file != null) {
+                uploadImage(file!);
+              }
             },
             child: const Text(
               "Post",
