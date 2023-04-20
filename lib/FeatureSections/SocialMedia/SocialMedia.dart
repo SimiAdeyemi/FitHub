@@ -17,7 +17,91 @@ class _SocialMediaState extends State<SocialMedia> {
 
   @override
   Widget build(BuildContext context) {
-    return postFunction(context);
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Social Media Posts')
+            .orderBy('timestamp', descending: true)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('An error occurred'));
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final List<DocumentSnapshot> posts = snapshot.data!.docs;
+          if (posts.isEmpty) {
+            return const Center(child: Text('No posts yet'));
+          }
+
+          return ListView.builder(
+            itemCount: posts.length,
+            itemBuilder: (BuildContext context, int index) {
+              final String imageUrl = posts[index].get('imageUrl');
+              final String displayName = posts[index].get('displayName');
+              final String title = posts[index].get('title');
+
+              return Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '$displayName - $title',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Image.network(imageUrl),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                title: const Text("Upload"),
+                children: <Widget>[
+                  SimpleDialogOption(
+                    onPressed: () async {
+                      Navigator.pop(context); // close the dialog box
+                      choosePhoto(false);
+                    },
+                    child: const Text('Camera'),
+                  ),
+                  SimpleDialogOption(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      choosePhoto(true); // close the dialog box
+                    },
+                    child: const Text('Camera Roll'),
+                  ),
+                  SimpleDialogOption(
+                    onPressed: () async {
+                      Navigator.pop(context); // close the dialog box
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: const Icon(Icons.camera_alt),
+      ),
+    );
   }
 
   Future<void> uploadImage(File file, String title) async {
@@ -39,7 +123,9 @@ class _SocialMediaState extends State<SocialMedia> {
         'imageUrl': downloadUrl,
         'displayName': displayName,
         'title': title,
+        'timestamp': FieldValue.serverTimestamp(),
       });
+
     } catch (e) {
       // Handle any errors that might occur
       print(e.toString());
@@ -77,9 +163,9 @@ class _SocialMediaState extends State<SocialMedia> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      width: double.maxFinite,
-                      child: Image.file(file!),
+                    FractionallySizedBox(
+                      widthFactor: 0.8, // Set the width to 80% of the parent container's width
+                      child: Image.file(file!), // Show the selected image in the pop-up dialog
                     ),
                   ],
                 ),
@@ -105,62 +191,5 @@ class _SocialMediaState extends State<SocialMedia> {
         );
       });
     }
-  }
-
-  Scaffold postFunction(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.bottomCenter,
-        child: ElevatedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  title: const Text("Upload"),
-                  children: <Widget>[
-                    SimpleDialogOption(
-                      onPressed: () async {
-                        Navigator.pop(context); // close the dialog box
-                        choosePhoto(false);
-                      },
-                      child: const Text('Camera'),
-                    ),
-                    SimpleDialogOption(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        //takeFromGallery(); // close the dialog box
-                        choosePhoto(true);
-                      },
-                      child: const Text('Camera Roll'),
-                    ),
-                    SimpleDialogOption(
-                      onPressed: () async {
-                        Navigator.pop(context); // close the dialog box
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            backgroundColor: Colors.green,
-            elevation: 0,
-          ),
-          child: const Icon(
-            Icons.camera_alt,
-            size: 24,
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        onPressed: () {},
-        child: const Icon(Icons.person),
-      ),
-    );
   }
 }
