@@ -52,7 +52,7 @@ class _SocialMediaState extends State<SocialMedia> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         '$displayName - $title',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -128,7 +128,6 @@ class _SocialMediaState extends State<SocialMedia> {
 
     } catch (e) {
       // Handle any errors that might occur
-      print(e.toString());
     }
   }
 
