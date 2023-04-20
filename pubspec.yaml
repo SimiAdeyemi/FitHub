@@ -31,7 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   dialog_flowtter:
-
+  image_picker_web: any
+  http: ^0.13.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -42,6 +43,8 @@ dependencies:
   json_annotation: ^4.4.0
   fl_chart: ^0.35.0
   provider: ^6.0.0
+  image_picker: ^0.8.7+3
+  firebase_storage: ^11.1.1
 
 dev_dependencies:
   flutter_test:
