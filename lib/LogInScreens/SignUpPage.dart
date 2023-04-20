@@ -120,12 +120,17 @@ class _SignUpPageState extends State<SignUpPage> {
 
   // This method is used to create the user in Firestore
   Future<void> userSetup(String displayName) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('Users'); // Gets the 'Users' collection in Firestore
-    FirebaseAuth auth = FirebaseAuth.instance; // Gets the current user's authentication data
-    String? uid = auth.currentUser?.uid; // Gets the user's UID
-    users.doc(uid).set({'displayName': displayName, 'uid': uid}); // Adds the user's display name and UID to Firestore
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String? uid = auth.currentUser?.uid;
+
+    // Update the display name in FirebaseAuth instance
+    await auth.currentUser?.updateDisplayName(displayName);
+
+    users.doc(uid).set({'displayName': displayName, 'uid': uid});
     return;
   }
+
 
 }
 

@@ -21,14 +21,11 @@ class _SocialMediaState extends State<SocialMedia> {
   List<Post> posts = [];
   FirebaseAuth get auth => FirebaseAuth.instance;
 
-
-
   @override
   void initState() {
     super.initState();
     fetchPosts();
   }
-
 
   Future<void> uploadImage(File file) async {
     final path =
@@ -40,6 +37,15 @@ class _SocialMediaState extends State<SocialMedia> {
     createPostInFireStore(url);
   }
 
+  Future<String?> getUserNameFromFirestore(String userId) async {
+    final doc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+    if (doc.exists) {
+      return doc['displayName'];
+    } else {
+      return null;
+    }
+  }
+
   Future<void> createPostInFireStore(String postUrl) async {
     final User? currentUser = auth.currentUser;
 
@@ -47,7 +53,10 @@ class _SocialMediaState extends State<SocialMedia> {
       DocumentReference docRef = FirebaseFirestore.instance.collection('posts').doc();
       final String postId = docRef.id;
       final String userId = currentUser.uid;
-      final String username = currentUser.displayName ?? 'Anonymous';
+
+      // Get the user's display name from Firestore
+      final String? username = await getUserNameFromFirestore(userId);
+
       final String description = descriptionController.text;
 
       await docRef.set({
@@ -71,18 +80,12 @@ class _SocialMediaState extends State<SocialMedia> {
       );
     }
   }
-
-
-
   Future<List<Post>> fetchPosts() async {
     QuerySnapshot querySnapshot = await postsRef
         .orderBy('timestamp', descending: true)
         .get();
     return querySnapshot.docs.map((doc) => Post.fromDocument(doc)).toList();
   }
-
-
-
 
   takePhoto() async {
     XFile? post = await ImagePicker().pickImage(
@@ -113,7 +116,7 @@ class _SocialMediaState extends State<SocialMedia> {
     return Column(
       children: [
         ListTile(
-          title: Text(post.username),
+          title: Text(post.username ?? "Anonymous"), // Display "Anonymous" when the username is null
           subtitle: Text(post.description),
           trailing: const Icon(Icons.more_vert),
         ),
@@ -133,6 +136,7 @@ class _SocialMediaState extends State<SocialMedia> {
       ],
     );
   }
+
 
 
   Scaffold postFunction(BuildContext context) {
@@ -278,31 +282,36 @@ class _SocialMediaState extends State<SocialMedia> {
     }
   }
 
-  class Post {
-    final String postId;
-    final String userId;
-    final String username;
-    final String imageUrl;
-    final String description;
-    final DateTime timestamp;
+class Post {
+  //post
+  final String postId;
+  final String userId;
+  final String? username;
+  final String imageUrl;
+  final String description;
+  final DateTime timestamp;
+  //like
 
-    Post({
+
+
+  Post({
     required this.postId,
     required this.userId,
-    required this.username,
+    this.username,
     required this.imageUrl,
     required this.description,
     required this.timestamp,
-    });
+  });
 
-    factory Post.fromDocument(DocumentSnapshot doc) {
-      return Post(
-        postId: doc['postId'],
-        userId: doc['userId'],
-        username: doc['username'],
-        imageUrl: doc['imageUrl'],
-        description: doc['description'],
-        timestamp: (doc['timestamp'] as Timestamp).toDate(),
-      );
-    }
+  factory Post.fromDocument(DocumentSnapshot doc) {
+    return Post(
+      postId: doc['postId'],
+      userId: doc['userId'],
+      username: doc['username'], // This field can now be nullable
+      imageUrl: doc['imageUrl'],
+      description: doc['description'],
+      timestamp: (doc['timestamp'] as Timestamp).toDate(),
+    );
   }
+}
+
