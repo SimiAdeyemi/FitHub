@@ -164,6 +164,7 @@ class _SocialMediaState extends State<SocialMedia> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return file == null ? postFunction(context) : buildUploadForm();
