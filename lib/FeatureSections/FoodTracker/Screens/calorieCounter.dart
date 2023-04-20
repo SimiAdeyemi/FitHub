@@ -72,7 +72,9 @@ class _calorieCounterState extends State<calorieCounter> {
         height: 220,
         child: Row(
           children: <Widget>[
-            caloriesStats(datePicked: _value),
+            Expanded(
+              child: caloriesStats(datePicked: _value),
+            ),
           ],
         ),
       ),
@@ -300,7 +302,7 @@ class _calorieCounterState extends State<calorieCounter> {
 
   Widget _showDatePicker() {
     return SizedBox(
-      width: 700,
+      width: 250,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -428,7 +430,9 @@ class _calorieCounterState extends State<calorieCounter> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                _showDatePicker(),
+                Expanded(
+                  child: _showDatePicker(),
+                ),
                 _addFoodButton(),
               ],
             ),
@@ -569,7 +573,7 @@ class FoodTrackTile extends StatelessWidget {
     return Row(
       children: <Widget>[
         SizedBox(
-          width: 350,
+          width: 272,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -585,7 +589,7 @@ class FoodTrackTile extends StatelessWidget {
                   ),
                   Text(' ${foodTrackEntry.carbs.toStringAsFixed(1)}g    ',
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 11.0,
                         color: Colors.yellow,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
@@ -600,7 +604,7 @@ class FoodTrackTile extends StatelessWidget {
                   ),
                   Text(' ${foodTrackEntry.protein.toStringAsFixed(1)}g    ',
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 11.0,
                         color: Colors.red,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
@@ -615,7 +619,7 @@ class FoodTrackTile extends StatelessWidget {
                   ),
                   Text(' ${foodTrackEntry.fat.toStringAsFixed(1)}g',
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 11.0,
                         color: Colors.blue,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
@@ -623,19 +627,21 @@ class FoodTrackTile extends StatelessWidget {
                 ],
               ),
               Expanded(
-                  child: Text(' Total grams: ${foodTrackEntry.grams}g',
-                      style: const TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.black,
-                        fontFamily: 'Open Sans',
-                        fontWeight: FontWeight.w300,
-                      ))),
+                child: Text(' Total grams: ${foodTrackEntry.grams}g',
+                    style: const TextStyle(
+                      fontSize: 11.0,
+                      color: Colors.black,
+                      fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.w300,
+                    )),
+              ),
             ],
           ),
         )
       ],
     );
   }
+
 
   Widget _expandedView(BuildContext context) {
     return Padding(

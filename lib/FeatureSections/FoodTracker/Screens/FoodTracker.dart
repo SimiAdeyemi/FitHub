@@ -30,148 +30,151 @@ class _FoodTrackerState extends State<FoodTracker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const calorieCounter()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const calorieCounter()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+              ),
+              child: const Text('Skip BMI Calculation'),
             ),
-            child: const Text('Skip BMI Calculation'),
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'Please select your gender:',
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          DropdownButton<String>(
-            value: _gender,
-            items: const [
-              DropdownMenuItem(
-                value: 'male',
-                child: Text('Male'),
-              ),
-              DropdownMenuItem(
-                value: 'female',
-                child: Text('Female'),
-              ),
-              DropdownMenuItem(
-                value: 'other',
-                child: Text('Other'),
-              ),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _gender = value;
-              });
-            },
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Are you over 18?'),
-              const SizedBox(width: 16),
-              Switch(
-                value: _isOver18,
-                onChanged: (value) {
-                  setState(() {
-                    _isOver18 = value;
-                  });
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Use metric units?'),
-              const SizedBox(width: 16),
-              Switch(
-                value: _useMetricUnits,
-                onChanged: (value) {
-                  setState(() {
-                    _useMetricUnits = value;
-                  });
-                },
-              ),
-            ],
-          ),
-          if (_gender != null && _isOver18)
-            Column(
+            const SizedBox(height: 16),
+            const Text(
+              'Please select your gender:',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            DropdownButton<String>(
+              value: _gender,
+              items: const [
+                DropdownMenuItem(
+                  value: 'male',
+                  child: Text('Male'),
+                ),
+                DropdownMenuItem(
+                  value: 'female',
+                  child: Text('Female'),
+                ),
+                DropdownMenuItem(
+                  value: 'other',
+                  child: Text('Other'),
+                ),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _gender = value;
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 16),
-                const Text(
-                  'Please enter your height and weight so we can find out a bit more about you',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                _buildHeightField(),
-                const SizedBox(height: 16),
-                if (_useMetricUnits)
-                  _buildWeightField()
-                else
-                  _buildPoundWeightField(),
-                const SizedBox(height: 16),
-                Visibility(
-                  visible: isVisible,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _calculateBMI();
-                      setState(() {
-                        isVisible = !isVisible;
-                      });
-                    },
-                    child: const Text('Calculate BMI'),
-                  ),
-                ),
-                Visibility(
-                  visible: !isVisible,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const calorieCounter()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
-                    child: const Text('Continue'),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
+                const Text('Are you over 18?'),
+                const SizedBox(width: 16),
+                Switch(
+                  value: _isOver18,
+                  onChanged: (value) {
                     setState(() {
-                      // Reset the text fields
-                      _heightController.text = '';
-                      _weightController.text = '';
-                      _poundWeightController.text = '';
-                      _inchesHeightController.text = '';
-                      // reset the bmi
-                      _showBmi = false;
-                      isVisible = true;
+                      _isOver18 = value;
                     });
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                  ),
-                  child: const Text('Reset'),
                 ),
               ],
             ),
-          if (_showBmi) Text('Your BMI is: $_bmi'),
-        ],
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Use metric units?'),
+                const SizedBox(width: 16),
+                Switch(
+                  value: _useMetricUnits,
+                  onChanged: (value) {
+                    setState(() {
+                      _useMetricUnits = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            if (_gender != null && _isOver18)
+              Column(
+                children: [
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Please enter your height and weight so we can find out a bit more about you',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildHeightField(),
+                  const SizedBox(height: 16),
+                  if (_useMetricUnits)
+                    _buildWeightField()
+                  else
+                    _buildPoundWeightField(),
+                  const SizedBox(height: 16),
+                  Visibility(
+                    visible: isVisible,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _calculateBMI();
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                      child: const Text('Calculate BMI'),
+                    ),
+                  ),
+                  Visibility(
+                    visible: !isVisible,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const calorieCounter()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text('Continue'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        // Reset the text fields
+                        _heightController.text = '';
+                        _weightController.text = '';
+                        _poundWeightController.text = '';
+                        _inchesHeightController.text = '';
+                        // reset the bmi
+                        _showBmi = false;
+                        isVisible = true;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                    ),
+                    child: const Text('Reset'),
+                  ),
+                ],
+              ),
+            if (_showBmi) Text('Your BMI is: $_bmi'),
+          ],
+        ),
       ),
     );
   }
